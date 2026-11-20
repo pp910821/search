@@ -147,6 +147,11 @@ textarea{width:100%;font:inherit;font-size:max(16px,1rem);padding:.55rem .8rem;b
 .dlg h3{margin:.6rem 0 0;font-size:1rem}
 .bk-msg{font-size:.9rem;margin:0;color:var(--mu);overflow-wrap:anywhere}
 .del{color:var(--ntf)}
+#tabs button{border:1px solid var(--ln);background:var(--sf);color:var(--fg);border-radius:.6rem}
+#tabs button:hover{background:var(--chip)}
+#tabs button[aria-selected=true]{background:var(--ac);color:var(--acf);border-color:var(--ac)}
+#tabs{padding:.5rem 0 .6rem}
+.cd a.vb{display:inline-flex;align-items:center;justify-content:center;width:100%;margin-top:.6rem;padding:.35rem 1rem;min-height:2.8rem;font-size:20px;font-weight:600;text-decoration:none;border-radius:.6rem}
 </style></head><body>
 <header id="hd"><div class="in">
   <div class="top"><h1>立宸實業有限公司<span class="h1s">五金表尺寸、確認</span></h1>
@@ -156,7 +161,7 @@ textarea{width:100%;font:inherit;font-size:max(16px,1rem);padding:.55rem .8rem;b
 <main class="in">
   <p class="note" id="adm-msg" hidden></p>
   <div id="home" hidden>
-    <p class="meta">輸入門的包外尺寸（mm）與型式，找出適合的證書</p>
+    
     <div class="panel2">
       <div class="field"><label for="d-w">寬（mm）</label><input id="d-w" type="number" inputmode="numeric" min="0" placeholder="例：900"></div>
       <div class="field"><label for="d-h">高（mm）</label><input id="d-h" type="number" inputmode="numeric" min="0" placeholder="例：2100"></div>
@@ -272,7 +277,7 @@ function renderHome(){
     (s2?`<div class="s2">${esc(s2)}</div>`:'')+
     (r.length?`<div><span class="pl nt">${r.map(esc).join('；')}</span></div>`:'')+
     (c.note.length?`<div>${c.note.map(n=>`<span class="pl sz">${esc(n)}</span>`).join('')}</div>`:'')+
-    `${admin?`<button type="button" class="lnk" data-edit="${c.id}">編輯此證書</button>`:''}<a class="lnk" href="#${c.id}">查看 ${c.id} 五金表 →</a></div>`}).join('');
+    `${admin?`<button type="button" class="lnk" data-edit="${c.id}">編輯此證書</button>`:''}<a class="btn go vb" href="#${c.id}">查看 ${c.id} 五金表 →</a></div>`}).join('');
 }
 ['d-w','d-h'].forEach(i=>$(i).addEventListener('input',renderHome));$('d-t').addEventListener('change',renderHome);
 function route(){
