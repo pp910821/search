@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>五金證書查詢</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f5d7c'/%3E%3Crect x='9' y='12' width='46' height='34' rx='3' fill='%23fffdf9'/%3E%3Cpath d='M16 21h32M16 28h32M16 35h15' stroke='%232f5d7c' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M38 50l-2 11 8-4 8 4-2-11z' fill='%23d9a93a'/%3E%3Ccircle cx='44' cy='44' r='9' fill='%23f0c75e' stroke='%23d9a93a' stroke-width='2'/%3E%3Ccircle cx='44' cy='44' r='4' fill='none' stroke='%2354420d' stroke-width='1.8'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f6f3ee;--card:#fffdf9;--ink:#2b2926;--mute:#7a746b;--line:#e4ded4;--acc:#2f5d7c;--acc-ink:#fffdf9;--soft:#e9eef1;--tag:#f0dfae;--tag-ink:#54420d;--err:#a6423a;--sh:0 1px 2px rgba(60,50,30,.05),0 6px 18px rgba(60,50,30,.05);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -196,7 +197,22 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
 <script>
 // ===== 請自行修改管理者密碼 =====
 var ADMIN_PW="admin1234";
-var SEED={hw:[],certs:[]};
+var SEED={"hw":[
+{"id":"H001","name":"輔助鎖 加凱 EZSET LJ1062","alias":["EZSET LJ1062"],"cat":"鎖類","spec":"主體","note":""},
+{"id":"H002","name":"中心型鉸鏈 立宸 FH-309","alias":["FH-309"],"cat":"鉸鏈類","spec":"主體","note":""},
+{"id":"H003","name":"門弓器 加凱 KM 084","alias":["KM 084","KM S984","KM H084","KM S504","可替換系列型號:KM S984 / KM H084 / KM S504。"],"cat":"門弓器","spec":"主體、S01","note":""},
+{"id":"H004","name":"防撬閂 立宸 LC-FI01","alias":["LC-FI01"],"cat":"配件","spec":"主體","note":""},
+{"id":"H005","name":"凹槽取手 加凱 KM F64","alias":["KM F64 備註:得取消使用。"],"cat":"取手","spec":"主體、S01","note":""},
+{"id":"H006","name":"門樘 鍍鋅鋼板 1.6mm","alias":["鍍鋅鋼板 1.6mm + 鍍鋅鋼板 1.2mm"],"cat":"材質","spec":"S01","note":""},
+{"id":"H007","name":"門扇 封邊鍍鋅鋼板 1.0mm","alias":[],"cat":"材質","spec":"S01","note":""},
+{"id":"H008","name":"水平鎖 東鐵 Power J5115S-C203","alias":["Power J5115S-C203","POWER J5118","POWER J5116"],"cat":"鎖類","spec":"可替換系列型號:POWER J5118 / POWER J5116。可替換把手系列型號:C201/C202/C203/C204/C205/C206/C208/C209/C211。組別:S01","note":""},
+{"id":"H009","name":"重力鉸鏈 立宸 CD-FM33420-1","alias":["CD-FM33420-1"],"cat":"鉸鏈類","spec":"組別:S01","note":""},
+{"id":"H010","name":"門弓器 加安 F984Q","alias":["F984Q","F983","FS983","FS984Q","FHO983","FHO984Q 可替換系列型號:F983 / FS983 / FS984Q / FHO983 / FHO984Q。"],"cat":"門弓器","spec":"S01","note":""},
+{"id":"H011","name":"方形取手 加凱 KM F61","alias":["KM F61"],"cat":"取手類","spec":"組別:S01","note":""},
+{"id":"H012","name":"門樘 鍍鋅鋼板 1.2mm","alias":[],"cat":"材質","spec":"S01","note":""}
+],"certs":[
+{"name":"FPSRC-D0257-CNS-F22","no":"CI314066690478","vfrom":"2025-12-23","vto":"2028-12-31","fire":"60B","door":"單開","wmin":1,"wmax":820,"hmin":1,"hmax":1883,"hardware":["H001","H002","H003","H004","H005","H006","H007","H008","H009","H010","H011","H012"],"note":"單一門扇尺度得縮減使用:\n門扇尺度縮減時，門鎖鎖舌安裝高度不得大於900mm"}
+]};
 var HW=[],CERTS=[],admin=false,dbDoc=null,LS="certlookup.data.v3",OLD="certlookup.certs.v2",selCert="",selCat="",editC=-1,editH=-1,pick={};
 function $(i){return document.getElementById(i)}
 function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
