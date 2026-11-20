@@ -7,9 +7,9 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='1' y='1' width='62' height='62' rx='14' fill='%23fffdf9' stroke='%23e4ded4' stroke-width='2'/%3E%3Crect x='9' y='12' width='46' height='34' rx='3' fill='%23fffdf9' stroke='%232f5d7c' stroke-width='3'/%3E%3Cpath d='M16 21h32M16 28h32M16 35h15' stroke='%232f5d7c' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M38 50l-2 11 8-4 8 4-2-11z' fill='%23d9a93a'/%3E%3Ccircle cx='44' cy='44' r='9' fill='%23f0c75e' stroke='%23d9a93a' stroke-width='2'/%3E%3Ccircle cx='44' cy='44' r='4' fill='none' stroke='%2354420d' stroke-width='1.8'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f3ee;--card:#fffdf9;--ink:#2b2926;--mute:#7a746b;--line:#e4ded4;--acc:#2f5d7c;--acc-ink:#fffdf9;--soft:#e9eef1;--tag:#f0dfae;--tag-ink:#54420d;--err:#a6423a;--sh:0 1px 2px rgba(60,50,30,.05),0 6px 18px rgba(60,50,30,.05);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1917;--card:#242220;--ink:#ece7de;--mute:#a39c90;--line:#38342f;--acc:#8fb4c9;--acc-ink:#10202a;--soft:#2a3338;--tag:#c9a85c;--tag-ink:#231a05;--err:#ff9a90;--sh:none;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#1a1917;--card:#242220;--ink:#ece7de;--mute:#a39c90;--line:#38342f;--acc:#8fb4c9;--acc-ink:#10202a;--soft:#2a3338;--tag:#c9a85c;--tag-ink:#231a05;--err:#ff9a90;--sh:none;color-scheme:dark}
+:root{--al:#d6ead8;--al-ink:#1f5130;--bg:#f6f3ee;--card:#fffdf9;--ink:#2b2926;--mute:#7a746b;--line:#e4ded4;--acc:#2f5d7c;--acc-ink:#fffdf9;--soft:#e9eef1;--tag:#f0dfae;--tag-ink:#54420d;--err:#a6423a;--sh:0 1px 2px rgba(60,50,30,.05),0 6px 18px rgba(60,50,30,.05);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--al:#34513b;--al-ink:#c4e8cd;--bg:#1a1917;--card:#242220;--ink:#ece7de;--mute:#a39c90;--line:#38342f;--acc:#8fb4c9;--acc-ink:#10202a;--soft:#2a3338;--tag:#c9a85c;--tag-ink:#231a05;--err:#ff9a90;--sh:none;color-scheme:dark}}
+:root[data-theme="dark"]{--al:#34513b;--al-ink:#c4e8cd;--bg:#1a1917;--card:#242220;--ink:#ece7de;--mute:#a39c90;--line:#38342f;--acc:#8fb4c9;--acc-ink:#10202a;--soft:#2a3338;--tag:#c9a85c;--tag-ink:#231a05;--err:#ff9a90;--sh:none;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 "Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}
@@ -52,6 +52,9 @@ label{display:block;font-size:13px;color:var(--mute);margin:10px 2px 6px;letter-
 .item dt:first-of-type,.item dd:first-of-type{border-top:0}
 .tag{display:inline-block;background:var(--tag);color:var(--tag-ink);border:0;border-radius:6px;padding:1px 9px;font:600 13px/1.6 inherit;font-family:inherit;margin:0 5px 4px 0}
 .chip{display:inline-block;background:var(--soft);border:0;border-radius:99px;padding:2px 11px;font:13px/1.6 inherit;font-family:inherit;margin:0 5px 4px 0;color:var(--ink)}
+.chip.al{background:var(--al);color:var(--al-ink);box-shadow:inset 0 0 0 1px var(--al-ink)}
+.tag.al{box-shadow:inset 0 -3px 0 var(--al-ink)}
+.lg{margin:2px 2px 12px}
 .chipbtn{min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--mute);border-radius:99px;padding:6px 16px;font:500 14px inherit;font-family:inherit;letter-spacing:.06em;margin:0 6px 8px 0;cursor:pointer}
 .chipbtn[aria-pressed=true]{background:var(--soft);color:var(--acc);border-color:var(--acc);font-weight:700}
 .note{color:var(--mute);font-size:13.5px}.err{color:var(--err);font-size:14px}
@@ -203,17 +206,19 @@ var SEED={"hw":[
 {"id":"H002","name":"中心型鉸鏈 立宸 FH-309","alias":["FH-309"],"cat":"鉸鏈類","spec":"主體","note":""},
 {"id":"H003","name":"門弓器 加凱 KM 084","alias":["KM 084","KM S984","KM H084","KM S504","可替換系列型號:KM S984 / KM H084 / KM S504。"],"cat":"門弓器","spec":"主體、S01","note":""},
 {"id":"H004","name":"防撬閂 立宸 LC-FI01","alias":["LC-FI01"],"cat":"配件","spec":"主體","note":""},
-{"id":"H005","name":"凹槽取手 加凱 KM F64","alias":["KM F64 備註:得取消使用。"],"cat":"取手","spec":"主體、S01","note":""},
-{"id":"H006","name":"門樘 鍍鋅鋼板 1.6mm","alias":["鍍鋅鋼板 1.6mm + 鍍鋅鋼板 1.2mm"],"cat":"材質","spec":"S01","note":""},
+{"id":"H005","name":"凹槽取手 加凱 KM F64","alias":["KM F64"],"cat":"取手","spec":"主體、S01","note":"備註:得取消使用。"},
+{"id":"H006","name":"門樘 鍍鋅鋼板 1.6mm","alias":[],"cat":"材質","spec":"S01","note":""},
 {"id":"H007","name":"門扇 封邊鍍鋅鋼板 1.0mm","alias":[],"cat":"材質","spec":"S01","note":""},
 {"id":"H008","name":"水平鎖 東鐵 Power J5115S-C203","alias":["Power J5115S-C203","POWER J5118","POWER J5116"],"cat":"鎖類","spec":"可替換系列型號:POWER J5118 / POWER J5116。可替換把手系列型號:C201/C202/C203/C204/C205/C206/C208/C209/C211。組別:S01","note":""},
 {"id":"H009","name":"重力鉸鏈 立宸 CD-FM33420-1","alias":["CD-FM33420-1"],"cat":"鉸鏈類","spec":"組別:S01","note":""},
 {"id":"H010","name":"門弓器 加安 F984Q","alias":["F984Q","F983","FS983","FS984Q","FHO983","FHO984Q 可替換系列型號:F983 / FS983 / FS984Q / FHO983 / FHO984Q。"],"cat":"門弓器","spec":"S01","note":""},
-{"id":"H011","name":"方形取手 加凱 KM F61","alias":["KM F61"],"cat":"取手類","spec":"組別:S01","note":""},
+{"id":"H011","name":"方形取手 加凱 KM F61","alias":["KM F61"],"cat":"取手類","spec":"S01","note":""},
 {"id":"H012","name":"門樘 鍍鋅鋼板 1.2mm","alias":[],"cat":"材質","spec":"S01","note":""}
 ],"certs":[
 {"name":"FPSRC-D0257-CNS-F22","no":"CI314066690478","vfrom":"2025-12-23","vto":"2028-12-31","fire":"60B","door":"單開","wmin":1,"wmax":820,"hmin":1,"hmax":1883,"hardware":["H001","H002","H003","H004","H005","H006","H007","H008","H009","H010","H011","H012"],"note":"單一門扇尺度得縮減使用:\n門扇尺度縮減時，門鎖鎖舌安裝高度不得大於900mm"}
 ]};
+// 內建資料版本:之後更新上方 SEED 時,把這個版本號改成不同的值,開啟頁面就會自動採用新的內建資料
+var SEED_VER="2026-11-20-2",SV="certlookup.seedver",seeded=false;
 var HW=[],CERTS=[],admin=false,dbDoc=null,LS="certlookup.data.v3",OLD="certlookup.certs.v2",selCert="",selCat="",editC=-1,editH=-1,pick={};
 function $(i){return document.getElementById(i)}
 function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
@@ -239,7 +244,9 @@ function purgeSample(){var gone={},ids={};
  HW=HW.filter(function(h){if(h.spec==="範例資料")return false;if(gone[h.id]&&!ids[h.id]&&!h.cat&&!h.spec&&!h.alias.length)return false;return true});
  var ok={};HW.forEach(function(h){ok[h.id]=1});CERTS.forEach(function(c){c.hardware=c.hardware.filter(function(i){return ok[i]})})}
 function migrate(d){migrate0(d);purgeSample()}
-function load(){var s;try{s=JSON.parse(localStorage.getItem(LS));if(s&&s.certs){migrate(s);return}}catch(e){}
+function load(){var s,sv=null;try{sv=localStorage.getItem(SV)}catch(e){}
+ if(sv!==SEED_VER){migrate(JSON.parse(JSON.stringify(SEED)));seeded=true;try{localStorage.setItem(SV,SEED_VER)}catch(e){}saveLocal();return}
+ try{s=JSON.parse(localStorage.getItem(LS));if(s&&s.certs){migrate(s);return}}catch(e){}
  try{s=JSON.parse(localStorage.getItem(OLD));if(Array.isArray(s)&&s.length){migrate(s);return}}catch(e){}
  migrate(JSON.parse(JSON.stringify(SEED)))}
 function dump(){return JSON.stringify({v:2,hw:HW,certs:CERTS})}
@@ -249,7 +256,7 @@ async function persist(){saveLocal();
  if(dbDoc){try{await Promise.race([dbDoc.set({json:dump()}),new Promise(function(_,r){setTimeout(function(){r(new Error("逾時"))},6000)})]);dirty=false;return"已儲存並同步給所有使用者"}
   catch(e){dirty=true;return"同步失敗("+((e&&(e.code||e.message))||"未知原因")+"),資料只存在此裝置"}}
  return"已儲存在此裝置(其他人看不到)"}
-async function initDb(){try{var c=window.claude&&await claude.use("db");if(!c)return;dbDoc=c.doc("store/certs");
+async function initDb(){try{var c=window.claude&&await claude.use("db");if(!c)return;dbDoc=c.doc("store/certs");if(seeded){dirty=true;persist()}
  dbDoc.onSnapshot(function(s){if(dirty||(s.metadata&&s.metadata.hasPendingWrites))return;if(s.exists){try{var a=JSON.parse(s.data().json);var ok=Array.isArray(a)||(a&&Array.isArray(a.certs));if(ok){migrate(a);saveLocal();render()}}catch(e){}}},function(){});
  if(admin)$("status").textContent="管理模式(雲端同步)"}catch(e){}}
 // ===== 模糊搜尋:連續兩字相同即視為相似 =====
@@ -260,9 +267,11 @@ function hs(h,q){return Math.max.apply(null,[h.name].concat(h.alias,[h.cat,h.spe
 function rng(a,b){return a==null&&b==null?"":(a==null?"":a)+" ~ "+(b==null?"":b)+" mm"}
 var CATS=["門鎖","鉸鏈","門弓器","配件","取手","材質","玻璃","其他"],LEG={"鎖類":"門鎖","鉸鏈類":"鉸鏈","取手類":"取手","門弓器類":"門弓器","閉門器類":"門弓器","門體":"材質"};
 function catOf(h){var c=h.cat;return CATS.indexOf(c)>-1?c:(LEG[c]||"其他")}
+function hasAl(h){var n=norm(h.name);return h.alias.some(function(a){return n.indexOf(norm(a))<0})}
+var LG='<p class="note lg"><span class="chip al">綠色</span>表示該五金另有其他別名或可替換型號</p>';
 function hwGroups(c,hl){var hs=c.hardware.map(hwBy).filter(Boolean);
  return CATS.map(function(k){var l=hs.filter(function(h){return catOf(h)===k});
-  return l.length?'<dt>'+k+'</dt><dd>'+l.map(function(h){return'<span class="'+(hl&&hl[h.id]?'tag':'chip')+'">'+esc(h.name)+'</span>'}).join("")+'</dd>':""}).join("")}
+  return l.length?'<dt>'+k+'</dt><dd>'+l.map(function(h){var al=hasAl(h);return'<span class="'+(hl&&hl[h.id]?'tag':'chip')+(al?' al':'')+'"'+(al?' title="'+esc('別名:'+h.alias.join("、"))+'"':'')+'>'+esc(h.name)+'</span>'}).join("")+'</dd>':""}).join("")}
 function cardCert(c,hl){return'<article class="item"><h3>'+esc(c.name)+'</h3><dl>'+
  ((c.no||c.door)?'<dt>號碼</dt><dd>'+(c.no?'<span class="tag">'+esc(c.no)+'</span>':'')+(c.door?'<span class="chip">'+esc(c.door)+'</span>':'')+'</dd>':'')+
  ((c.vfrom||c.vto)?'<dt>驗證登錄<br>證書效期</dt><dd>'+(fd(c.vfrom)||'—')+' ~ '+(fd(c.vto)||'—')+'</dd>':'')+
@@ -276,7 +285,7 @@ function hwCard(h){var u=usedBy(h);return'<article class="item"><h3>'+esc(h.name
  (h.alias.length?'<dt>別名</dt><dd>'+esc(h.alias.join("、"))+'</dd>':'')+(h.spec?'<dt>同型式</dt><dd>'+esc(h.spec)+'</dd>':'')+
  '<dt>證書</dt><dd>'+(u.length?u.map(function(c){return'<button class="tag" data-cert="'+esc(ckey(c))+'">'+esc(c.name+(c.no?' '+c.no:''))+'</button>'}).join(""):'<span class="note">尚無證書使用</span>')+'</dd></dl></article>'}
 // ===== 顯示 =====
-function renderCerts(){$("r-cert").innerHTML=CERTS.length?CERTS.map(function(c){return cardCert(c)}).join(""):'<p class="empty">目前沒有證書資料</p>'}
+function renderCerts(){$("r-cert").innerHTML=CERTS.length?LG+CERTS.map(function(c){return cardCert(c)}).join(""):'<p class="empty">目前沒有證書資料</p>'}
 var mode="cert";
 function hwLine(h,nc){return'<article class="item"><h3>'+esc(h.name)+(h.cat&&!nc?' <span class="chip">'+esc(h.cat)+'</span>':'')+'</h3>'+((h.alias.length||h.spec||h.note)?'<dl>'+(h.alias.length?'<dt>別名</dt><dd>'+esc(h.alias.join("、"))+'</dd>':'')+(h.spec?'<dt>同型式</dt><dd>'+esc(h.spec)+'</dd>':'')+(h.note?'<dt>備註</dt><dd>'+esc(h.note)+'</dd>':'')+'</dl>':'')+'</article>'}
 var CATS2=["材質","門鎖","鉸鏈","門弓器","配件","取手","玻璃","其他"];
@@ -295,7 +304,7 @@ function renderPick(){
  function certsOf(l){var m={};l.forEach(function(h){m[h.id]=1});return CERTS.filter(function(c){return c.hardware.some(function(id){return m[id]})})}
  var ce=certsOf(ex),cm=certsOf(sm).filter(function(c){return ce.indexOf(c)<0});
  var f=function(l){return l.map(function(c){return cardCert(c,hl)}).join("")};
- $("r-hw").innerHTML=(ce.length||cm.length)?'<h2>有此五金的證書</h2>'+f(ce)+(cm.length?'<p class="sim">'+(ce.length?'相似結果':'沒有完全符合,以下是相似結果')+'</p>'+f(cm.slice(0,20)):""):'<p class="empty">找不到有此五金的證書。</p>'}
+ $("r-hw").innerHTML=(ce.length||cm.length)?'<h2>有此五金的證書</h2>'+LG+f(ce)+(cm.length?'<p class="sim">'+(ce.length?'相似結果':'沒有完全符合,以下是相似結果')+'</p>'+f(cm.slice(0,20)):""):'<p class="empty">找不到有此五金的證書。</p>'}
 function render(){renderCerts();renderPick();if(admin)renderAdmin()}
 // ===== 管理頁 =====
 function renderAdmin(){renderCPicker();renderJhSel();
