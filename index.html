@@ -9,8 +9,8 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='1' y='1' width='62' height='62' rx='14' fill='%23fffdf9' stroke='%23e4ded4' stroke-width='2'/%3E%3Crect x='9' y='12' width='46' height='34' rx='3' fill='%23fffdf9' stroke='%232f5d7c' stroke-width='3'/%3E%3Cpath d='M16 21h32M16 28h32M16 35h15' stroke='%232f5d7c' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M38 50l-2 11 8-4 8 4-2-11z' fill='%23d9a93a'/%3E%3Ccircle cx='44' cy='44' r='9' fill='%23f0c75e' stroke='%23d9a93a' stroke-width='2'/%3E%3Ccircle cx='44' cy='44' r='4' fill='none' stroke='%2354420d' stroke-width='1.8'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600&display=swap" rel="stylesheet">
 <style>
-:root{--al:#d6ead8;--al-ink:#1f5130;--bg:#f6f3ee;--card:#fffdf9;--ink:#2b2926;--mute:#7a746b;--line:#e4ded4;--acc:#2f5d7c;--acc-ink:#fffdf9;--soft:#e9eef1;--tag:#f0dfae;--tag-ink:#54420d;--err:#a6423a;--sh:0 1px 2px rgba(60,50,30,.05),0 6px 18px rgba(60,50,30,.05);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+:root{--al:#d6ead8;--al-ink:#1f5130;--bg:#f6f3ee;--card:#fffdf9;--ink:#2b2926;--mute:#7a746b;--line:#e4ded4;--acc:#2f5d7c;--acc-ink:#fffdf9;--soft:#e9eef1;--tag:#f0dfae;--tag-ink:#54420d;--err:#a6423a;--sh:0 1px 2px rgba(60,50,30,.05),0 6px 18px rgba(60,50,30,.05);color-scheme:light only;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{background:#f6f3ee;color-scheme:light only;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 "Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}
 .top{max-width:640px;margin:0 auto;display:flex;justify-content:flex-end;padding:8px 14px 0}
@@ -55,6 +55,19 @@ label{display:block;font-size:13px;color:var(--mute);margin:10px 2px 6px;letter-
 .chip.al{background:var(--al);color:var(--al-ink);box-shadow:inset 0 0 0 1px var(--al-ink)}
 .tag.al{box-shadow:inset 0 -3px 0 var(--al-ink)}
 .lg{margin:2px 2px 12px}
+.rd{color:var(--err);font-weight:700}
+.chip small.rd,.tag small.rd{font-size:12px;font-weight:600;margin-left:6px}
+.rdl{color:var(--err);font-size:13.5px;font-weight:600;margin:6px 2px 10px}
+[data-hid]{cursor:pointer}
+[data-hid]:active{opacity:.75}
+.mask{position:fixed;inset:0;z-index:50;background:rgba(30,25,15,.45);display:flex;align-items:center;justify-content:center;padding:20px}
+.dlg{position:relative;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:20px 20px 18px;width:100%;max-width:440px;max-height:80vh;max-height:80dvh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.dlg h3{margin:0 40px 12px 0;font:600 16px/1.5 "Noto Serif TC","Noto Sans TC",serif;letter-spacing:.04em}
+.dlg .x{position:absolute;top:6px;right:6px;width:44px;height:44px;border:0;border-radius:50%;background:none;color:var(--mute);font-size:22px;line-height:1;cursor:pointer}
+.dlg .x:hover{background:var(--soft);color:var(--ink)}
+.dlg .k{font-size:12.5px;color:var(--mute);letter-spacing:.1em;margin:12px 0 6px}
+.dlg .k:first-of-type{margin-top:0}
+.dlg p{margin:0;font-size:15px;word-break:break-word}
 .chipbtn{min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--mute);border-radius:99px;padding:6px 16px;font:500 14px inherit;font-family:inherit;letter-spacing:.06em;margin:0 6px 8px 0;cursor:pointer}
 .chipbtn[aria-pressed=true]{background:var(--soft);color:var(--acc);border-color:var(--acc);font-weight:700}
 .note{color:var(--mute);font-size:13.5px}.err{color:var(--err);font-size:14px}
@@ -198,6 +211,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
 </div>
 </section>
 </main>
+<div class="mask" id="am" hidden role="dialog" aria-modal="true" aria-labelledby="am-t"><div class="dlg"><button class="x" id="am-x" type="button" aria-label="關閉">✕</button><h3 id="am-t"></h3><div id="am-b"></div></div></div>
 <script>
 // ===== 請自行修改管理者密碼 =====
 var ADMIN_PW="admin1234";
@@ -269,9 +283,16 @@ var CATS=["門鎖","鉸鏈","門弓器","配件","取手","材質","玻璃","其
 function catOf(h){var c=h.cat;return CATS.indexOf(c)>-1?c:(LEG[c]||"其他")}
 function hasAl(h){var n=norm(h.name);return h.alias.some(function(a){return n.indexOf(norm(a))<0})}
 var LG='<p class="note lg"><span class="chip al">綠色</span>表示該五金另有其他別名或可替換型號</p>';
+function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}
+function mark(t,q){var k=String(q).replace(/[\s　]+/g,"");if(!k)return null;var re;try{re=new RegExp(k.split("").map(escRe).join("[\\s\\u3000]*"),"i")}catch(e){return null}
+ var m=re.exec(t);return m?esc(t.slice(0,m.index))+'<b class="rd">'+esc(m[0])+'</b>'+esc(t.slice(m.index+m[0].length)):null}
+function nameHtml(h,hl){var q=mode==="hw"?$("pq").value.trim():"";if(!q||!(hl&&hl[h.id]))return esc(h.name);
+ var r=mark(h.name,q);if(r)return r;
+ var a=h.alias.filter(function(x){return mark(x,q)})[0];
+ return esc(h.name)+(a?'<small class="rd">別名:'+mark(a,q)+'</small>':'')}
 function hwGroups(c,hl){var hs=c.hardware.map(hwBy).filter(Boolean);
  return CATS.map(function(k){var l=hs.filter(function(h){return catOf(h)===k});
-  return l.length?'<dt>'+k+'</dt><dd>'+l.map(function(h){var al=hasAl(h);return'<span class="'+(hl&&hl[h.id]?'tag':'chip')+(al?' al':'')+'"'+(al?' title="'+esc('別名:'+h.alias.join("、"))+'"':'')+'>'+esc(h.name)+'</span>'}).join("")+'</dd>':""}).join("")}
+  return l.length?'<dt>'+k+'</dt><dd>'+l.map(function(h){var al=hasAl(h);return'<span class="'+(hl&&hl[h.id]?'tag':'chip')+(al?' al':'')+'"'+(al?' data-hid="'+esc(h.id)+'" role="button" tabindex="0"':'')+'>'+nameHtml(h,hl)+'</span>'}).join("")+'</dd>':""}).join("")}
 function cardCert(c,hl){return'<article class="item"><h3>'+esc(c.name)+'</h3><dl>'+
  ((c.no||c.door)?'<dt>號碼</dt><dd>'+(c.no?'<span class="tag">'+esc(c.no)+'</span>':'')+(c.door?'<span class="chip">'+esc(c.door)+'</span>':'')+'</dd>':'')+
  ((c.vfrom||c.vto)?'<dt>驗證登錄<br>證書效期</dt><dd>'+(fd(c.vfrom)||'—')+' ~ '+(fd(c.vto)||'—')+'</dd>':'')+
@@ -304,7 +325,7 @@ function renderPick(){
  function certsOf(l){var m={};l.forEach(function(h){m[h.id]=1});return CERTS.filter(function(c){return c.hardware.some(function(id){return m[id]})})}
  var ce=certsOf(ex),cm=certsOf(sm).filter(function(c){return ce.indexOf(c)<0});
  var f=function(l){return l.map(function(c){return cardCert(c,hl)}).join("")};
- $("r-hw").innerHTML=(ce.length||cm.length)?'<h2>有此五金的證書</h2>'+LG+f(ce)+(cm.length?'<p class="sim">'+(ce.length?'相似結果':'沒有完全符合,以下是相似結果')+'</p>'+f(cm.slice(0,20)):""):'<p class="empty">找不到有此五金的證書。</p>'}
+ $("r-hw").innerHTML=(ce.length||cm.length)?'<h2>有此五金的證書</h2>'+(q.trim()?'<p class="rdl">輸入「'+esc(q.trim())+'」:'+(ex.length?'符合 '+ex.length+' 項五金、'+ce.length+' 張證書':'沒有完全符合的五金,以下為相似結果')+'</p>':'')+LG+f(ce)+(cm.length?'<p class="sim">'+(ce.length?'相似結果':'沒有完全符合,以下是相似結果')+'</p>'+f(cm.slice(0,20)):""):'<p class="empty"><span class="rd">找不到與「'+esc(q.trim())+'」相關的五金證書</span></p>'}
 function render(){renderCerts();renderPick();if(admin)renderAdmin()}
 // ===== 管理頁 =====
 function renderAdmin(){renderCPicker();renderJhSel();
@@ -420,6 +441,17 @@ $("pw").onkeydown=function(e){if(e.key==="Enter")$("loginBtn").click()};
 $("logout").onclick=function(){try{sessionStorage.removeItem("certAdmin")}catch(e){}setAdmin(false)};
 function showSub(a){["hw","hl","cert","cl","bk"].forEach(function(k){$("a-"+k).hidden=k!==a});document.querySelectorAll("[data-sub]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.sub===a)})}
 document.querySelectorAll("[data-sub]").forEach(function(b){b.onclick=function(){showSub(b.dataset.sub)}});
+// ===== 別名資訊視窗 =====
+function showAl(id){var h=hwBy(id);if(!h)return;$("am-t").textContent=h.name;
+ $("am-b").innerHTML=(h.alias.length?'<div class="k">別名/可替換型號</div><div>'+h.alias.map(function(a){return'<span class="chip al">'+esc(a)+'</span>'}).join("")+'</div>':'')+
+  (h.spec?'<div class="k">同型式</div><p>'+esc(h.spec)+'</p>':'')+(h.note?'<div class="k">備註</div><p>'+esc(h.note)+'</p>':'');
+ $("am").hidden=false;$("am-x").focus()}
+function hideAl(){$("am").hidden=true}
+$("am-x").onclick=hideAl;
+$("am").onclick=function(e){if(e.target===this)hideAl()};
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("am").hidden){hideAl();return}
+ if((e.key==="Enter"||e.key===" ")&&e.target.dataset&&e.target.dataset.hid){e.preventDefault();showAl(e.target.dataset.hid)}});
+document.addEventListener("click",function(e){var el=e.target.closest("[data-hid]");if(el)showAl(el.dataset.hid)});
 load();render();initDb();
 try{if(sessionStorage.getItem("certAdmin"))setAdmin(true)}catch(e){}
 </script>
