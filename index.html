@@ -3,215 +3,399 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>成長紀錄</title>
-<link rel="apple-touch-icon" href="data:image/png;base64,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">
-<link rel="icon" type="image/png" href="data:image/png;base64,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">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="成長紀錄">
-<meta name="theme-color" content="#fbd85a">
-
+<title>五金證書查詢</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light;--bg:#fdf3c4;--card:#fffbe8;--ink:#4a3a14;--sub:#8c7a4a;--line:#ecdf9f;--h:#2f7f6c;--w:#cc6528;--f:#7a5aa6;--acc:#5a4515;--accink:#fff8d6;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;-webkit-text-size-adjust:100%}
-main{max-width:480px;margin:0 auto;padding:16px 16px 40px}
-h1{font-size:26px;margin:6px 0 14px;font-weight:800;letter-spacing:.04em}
-.kids{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
-.kid{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px;padding:6px 14px;font:inherit;font-size:15px}
-.kid[aria-pressed=true]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
-.card{background:var(--card);border-radius:22px;padding:18px;margin-bottom:14px;border:1px solid var(--line);box-shadow:0 6px 16px rgba(140,110,20,.10)}
-.now{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.now b{display:block;font-size:30px;line-height:1.1}
-.now small{color:var(--sub);font-size:14px}
-.now div:nth-child(1) b{color:var(--h)}
-.now div:nth-child(2) b{color:var(--w)}
-.now div:nth-child(3) b{color:var(--f)}
-.now.a b{font-size:24px}
-.up{font-size:13px;color:var(--sub)}
-.tabs{display:flex;gap:6px;margin-bottom:8px}
-.tab{flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--line);background:none;color:var(--sub);font:inherit;font-weight:600}
-.tab{border-radius:14px}
-.tab[aria-pressed=true]{color:var(--accink);background:var(--acc);border-color:var(--acc)}
-svg{width:100%;height:auto;display:block;touch-action:manipulation}
-.tip{min-height:24px;font-size:14px;color:var(--sub);margin:4px 0 0}
-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-label{font-size:13px;color:var(--sub);display:block}
-input{width:100%;margin-top:2px;padding:11px;border-radius:14px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-size:16px}
-.full{grid-column:1/-1}
-.btn{padding:13px;border-radius:16px;border:0;background:var(--acc);color:var(--accink);font:inherit;font-weight:700;width:100%}
-.ghost{background:none;border:1.5px solid var(--line);color:var(--ink);font-weight:500}
-table{width:100%;border-collapse:collapse;font-size:15px}
-th{font-weight:500;color:var(--sub);text-align:left;font-size:13px;padding-bottom:6px}
-td{padding:9px 0;border-top:1px solid var(--line)}
-td:last-child{text-align:right}
-.del{background:none;border:0;color:var(--sub);font-size:20px;padding:0 4px}
-.empty{color:var(--sub);text-align:center;padding:20px 0;margin:0}
-h2{font-size:16px;margin:0 0 10px}
-.row{display:flex;gap:8px}
+:root{--bg:#f6f3ee;--card:#fffdf9;--ink:#2b2926;--mute:#7a746b;--line:#e4ded4;--acc:#2f5d7c;--acc-ink:#fffdf9;--soft:#e9eef1;--tag:#f0dfae;--tag-ink:#54420d;--err:#a6423a;--sh:0 1px 2px rgba(60,50,30,.05),0 6px 18px rgba(60,50,30,.05);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1917;--card:#242220;--ink:#ece7de;--mute:#a39c90;--line:#38342f;--acc:#8fb4c9;--acc-ink:#10202a;--soft:#2a3338;--tag:#c9a85c;--tag-ink:#231a05;--err:#ff9a90;--sh:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1a1917;--card:#242220;--ink:#ece7de;--mute:#a39c90;--line:#38342f;--acc:#8fb4c9;--acc-ink:#10202a;--soft:#2a3338;--tag:#c9a85c;--tag-ink:#231a05;--err:#ff9a90;--sh:none;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 "Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}
+.top{max-width:640px;margin:0 auto;display:flex;justify-content:flex-end;padding:8px 14px 0}
+.lnk{background:none;border:0;padding:8px 6px;min-height:36px;color:var(--mute);font:400 13px inherit;font-family:inherit;letter-spacing:.14em;cursor:pointer;text-underline-offset:5px}
+.lnk:hover,.lnk.on{color:var(--acc);text-decoration:underline}
+header{padding:10px 20px 14px;max-width:640px;margin:0 auto;text-align:center}
+h1{font:600 22px/1.3 "Noto Serif TC","Songti TC","PMingLiU",serif;margin:0;letter-spacing:.28em;padding-left:.28em}
+header p{margin:8px 0 0;color:var(--mute);font-size:13px;letter-spacing:.16em}
+header p::before{content:"";display:block;width:28px;height:1px;background:var(--acc);margin:0 auto 10px;opacity:.6}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:8px 16px 10px}
+nav div{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:8px;max-width:640px;margin:0 auto}
+nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:56px;padding:8px 4px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--mute);font:500 13px/1.2 inherit;font-family:inherit;letter-spacing:.1em;cursor:pointer;box-shadow:var(--sh);transition:background .2s,color .2s,border-color .2s,transform .1s}
+nav button svg{width:20px;height:20px}
+nav button:active{transform:scale(.97)}
+nav button[aria-selected=true]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink);font-weight:700}
+main{max-width:640px;margin:0 auto;padding:8px 16px 72px}
+section{animation:fin .3s ease}
+@keyframes fin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){section{animation:none}nav button{transition:none}}
+input,textarea,select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;min-height:46px}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='m1 1 5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+textarea{font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.6;min-height:130px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 22%,transparent)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 2px 6px;letter-spacing:.08em}
+.btn{min-height:46px;border:1px solid var(--acc);border-radius:12px;padding:10px 18px;background:var(--acc);color:var(--acc-ink);font:600 15px inherit;font-family:inherit;letter-spacing:.1em;cursor:pointer}
+.btn.alt{background:transparent;color:var(--acc)}
+.btn.sm{min-height:36px;padding:6px 14px;font-size:13px;border-radius:10px}
+.btn:active{opacity:.85}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}
+.pair{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:start}
+.pair span{padding-top:13px;color:var(--mute)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:0 0 12px;box-shadow:var(--sh)}
+.item h3{margin:0 0 8px;font:600 17px/1.45 "Noto Serif TC","Noto Sans TC",serif;letter-spacing:.06em}
+.item dl{margin:0;display:grid;grid-template-columns:4.6em 1fr;gap:0 10px;font-size:15px}
+.item dt{color:var(--mute);font-size:12.5px;letter-spacing:.1em;padding:7px 0;border-top:1px solid var(--line)}
+.item dd{margin:0;word-break:break-word;padding:5px 0;border-top:1px solid var(--line)}
+.item dt:first-of-type,.item dd:first-of-type{border-top:0}
+.tag{display:inline-block;background:var(--tag);color:var(--tag-ink);border:0;border-radius:6px;padding:1px 9px;font:600 13px/1.6 inherit;font-family:inherit;margin:0 5px 4px 0}
+.chip{display:inline-block;background:var(--soft);border:0;border-radius:99px;padding:2px 11px;font:13px/1.6 inherit;font-family:inherit;margin:0 5px 4px 0;color:var(--ink)}
+.chipbtn{min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--mute);border-radius:99px;padding:6px 16px;font:500 14px inherit;font-family:inherit;letter-spacing:.06em;margin:0 6px 8px 0;cursor:pointer}
+.chipbtn[aria-pressed=true]{background:var(--soft);color:var(--acc);border-color:var(--acc);font-weight:700}
+.note{color:var(--mute);font-size:13.5px}.err{color:var(--err);font-size:14px}
+.sim{font-size:12.5px;color:var(--mute);margin:20px 2px 8px;letter-spacing:.12em}
+.empty{text-align:center;color:var(--mute);padding:44px 12px;font-size:14px;letter-spacing:.08em}
+h2{font:600 15px/1.4 "Noto Serif TC","Noto Sans TC",serif;letter-spacing:.14em;margin:26px 2px 10px;color:var(--ink);display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 16px 14px;box-shadow:var(--sh)}
+.picker{max-height:190px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin:0 0 8px}
+.ck{display:flex;align-items:center;color:var(--ink);font-size:15px;padding:5px 0;gap:6px;margin:0}
+.ck input{width:auto;min-height:0;margin:0}
+.gh{font:600 14px/1.4 "Noto Serif TC","Noto Sans TC",serif;color:var(--acc);margin:22px 2px 10px;letter-spacing:.14em;display:flex;align-items:center;gap:10px}
+.gh::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.warn{color:var(--err);font-weight:600;font-size:13px}
 [hidden]{display:none!important}
-#panel{margin-top:14px;margin-bottom:0}
-#panel p{margin:0 0 10px;font-weight:600}
-#panel input{margin:0 0 10px}
-#pType,#pGen{margin-bottom:10px}
-.tp[aria-pressed=true],.tg[aria-pressed=true]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
 </style>
 </head>
 <body>
+<div class="top"><button class="lnk" id="loginLink" type="button">登入</button></div>
+<header><h1>五金證書查詢</h1><p>證書資訊、適用五金查詢</p></header>
+<nav><div role="tablist">
+<button role="tab" data-t="cert" aria-selected="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>證書資訊</span></button>
+<button role="tab" data-t="pick" aria-selected="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>查詢</span></button>
+</div></nav>
 <main>
-<h1>成長紀錄</h1>
-<div class="kids" id="kids"></div>
-<div class="card now" id="now"></div>
-<div class="card">
-  <div class="tabs">
-    <button class="tab" id="tH" aria-pressed="true">身高 cm</button>
-    <button class="tab" id="tW" aria-pressed="false">體重 kg</button>
-    <button class="tab" id="tF" aria-pressed="false" hidden>體脂肪 %</button>
-  </div>
-  <div id="chart"></div>
-  <p class="tip" id="tip">點選圖上的點可查看數值</p>
+<section id="p-cert"><div id="r-cert"></div></section>
+<section id="p-pick" hidden>
+<div class="row" id="modes"><button class="chipbtn" data-mode="cert" aria-pressed="true">證書查詢</button><button class="chipbtn" data-mode="hw" aria-pressed="false">五金型號查詢</button></div>
+<div id="m-cert">
+<label for="cs">選擇證書</label>
+<select id="cs"></select>
+<div id="r-pick"></div>
 </div>
-<div class="card">
-  <h2>新增紀錄</h2>
-  <form id="f">
-    <div class="full"><label>日期<input type="date" id="d" required></label></div>
-    <label>身高 (cm)<input type="number" id="h" step="0.1" min="20" max="250" inputmode="decimal" required></label>
-    <label>體重 (kg)<input type="number" id="w" step="0.01" min="1" max="200" inputmode="decimal" required></label>
-    <label class="full" id="bfWrap" hidden>體脂肪 (%)，選填<input type="number" id="bf" step="0.1" min="2" max="70" inputmode="decimal"></label>
-    <div class="full"><button class="btn" type="submit">儲存紀錄</button></div>
-  </form>
+<div id="m-hw" hidden>
+<label for="pq">輸入五金名稱(輸入相關字即可)</label>
+<input id="pq" type="search" autocomplete="off">
+<div id="r-hw"></div>
 </div>
-<div class="card">
-  <h2>歷史紀錄</h2>
-  <div id="list"></div>
+</section>
+<section id="p-admin" hidden>
+<div id="login">
+<label for="pw">管理者密碼</label>
+<input id="pw" type="password" autocomplete="current-password">
+<button class="btn" id="loginBtn">登入</button>
+<p class="err" id="loginErr"></p>
 </div>
-<div class="row">
-  <button class="btn ghost" id="addKid">新增成員</button>
-  <button class="btn ghost" id="rmKid">刪除此成員</button>
+<div id="panel" hidden>
+<div class="row"><span class="note" id="status"></span><button class="btn alt sm" id="logout">登出</button></div>
+<div class="row"><button class="chipbtn" data-sub="hw" aria-pressed="true">新增五金</button><button class="chipbtn" data-sub="hl" aria-pressed="false">五金清單</button><button class="chipbtn" data-sub="cert" aria-pressed="false">新增證書</button><button class="chipbtn" data-sub="cl" aria-pressed="false">證書清單</button><button class="chipbtn" data-sub="bk" aria-pressed="false">備份還原</button></div>
+<p id="msg" class="note" role="status"></p>
+
+<div id="a-hw">
+<h2>新增五金</h2>
+<div class="box">
+<label for="h-name">五金名稱</label><input id="h-name">
+<label for="h-alias">別名(用逗號分隔)</label><input id="h-alias">
+<label for="h-cat">分類</label><select id="h-cat"><option value="">未指定</option><option value="門鎖">門鎖</option><option value="鉸鏈">鉸鏈</option><option value="門弓器">門弓器</option><option value="配件">配件</option><option value="取手">取手</option><option value="材質">材質</option><option value="玻璃">玻璃</option><option value="其他">其他</option></select>
+<label for="h-spec">同型式(選填,多個用頓號或逗號分隔)</label><input id="h-spec">
+<label for="h-note">備註(選填)</label><textarea id="h-note" style="min-height:76px"></textarea>
+<label for="h-csel">歸類於證書(下拉選擇,可選多張)</label>
+<select id="h-csel"></select>
+<div id="cchosen" style="margin-bottom:6px"></div>
+<div class="row" style="margin-bottom:10px"><input id="h-cnew" placeholder="找不到?輸入證書名稱直接新增" style="flex:1;margin:0"><button class="btn alt sm" id="cQuick" type="button">新增並勾選</button></div>
+<div class="row"><button class="btn" id="h-save">新增五金</button><button class="btn alt" id="h-clear">清空</button></div>
 </div>
-<div class="card" id="panel" hidden>
-  <p id="pMsg"></p>
-  <div class="row" id="pType">
-    <button class="btn ghost tp" type="button" data-t="child" aria-pressed="true">小孩</button>
-    <button class="btn ghost tp" type="button" data-t="adult" aria-pressed="false">成人</button>
-  </div>
-  <div class="row" id="pGen">
-    <button class="btn ghost tg" type="button" data-g="m" aria-pressed="true">♂ 男生</button>
-    <button class="btn ghost tg" type="button" data-g="f" aria-pressed="false">♀ 女生</button>
-  </div>
-  <input type="text" id="pIn" maxlength="12" placeholder="名字或暱稱">
-  <div class="row">
-    <button class="btn ghost" id="pNo" type="button">取消</button>
-    <button class="btn" id="pYes" type="button">確定</button>
-  </div>
+<label for="jh" style="margin-top:10px">五金 JSON 批次新增</label>
+<textarea id="jh" spellcheck="false"></textarea>
+<label for="jh-same">同型式(選填,套用到沒有填同型式的每一項五金)</label>
+<input id="jh-same">
+<label for="jh-cert">歸類到證書(選填,貼上的五金會全部掛到這張證書)</label>
+<select id="jh-cert"></select>
+<div class="row"><button class="btn alt" id="jh-add">五金 JSON 新增</button></div>
 </div>
+<div id="a-hl" hidden>
+<h2>五金清單</h2>
+<label for="hl-cert">選擇證書</label>
+<select id="hl-cert"></select>
+<h3 style="font-size:15px;margin:14px 0 8px">共 <span id="hcnt">0</span> 筆</h3>
+<div id="hlist"></div>
+</div>
+<div id="a-cert" hidden>
+<h2>新增證書</h2>
+<div class="box">
+<label for="f-name">證書名稱</label><input id="f-name">
+<label for="f-no">證書號碼</label><input id="f-no">
+<label>驗證登錄證書效期(年月日 ~ 年月日)</label>
+<div class="pair"><input id="f-vfrom" type="date" aria-label="效期起日"><span>~</span><input id="f-vto" type="date" aria-label="效期迄日"></div>
+<label for="f-door">單開或雙開</label>
+<select id="f-door"><option value="">未指定</option><option value="單開">單開</option><option value="雙開">雙開</option></select>
+<label for="f-fire">防火等級</label>
+<select id="f-fire"><option value="">未指定</option><option value="60A">60A</option><option value="60B">60B</option><option value="120A">120A</option></select>
+<label>門扇寬尺寸範圍(mm,最小到最大)</label>
+<div class="pair"><input id="f-wmin" type="number" inputmode="numeric" placeholder="最小"><span>~</span><input id="f-wmax" type="number" inputmode="numeric" placeholder="最大"></div>
+<label>門扇高尺寸範圍(mm,最小到最大)</label>
+<div class="pair"><input id="f-hmin" type="number" inputmode="numeric" placeholder="最小"><span>~</span><input id="f-hmax" type="number" inputmode="numeric" placeholder="最大"></div>
+<label for="f-note">備註</label><textarea id="f-note" style="min-height:70px"></textarea>
+<div class="row"><button class="btn" id="save">新增證書</button><button class="btn alt" id="clear">清空</button></div>
+</div>
+<label for="jc" style="margin-top:10px">證書 JSON 批次新增</label>
+<p class="note">欄位:name、no、door、fire(60A/60B/120A)、vfrom、vto(驗證登錄證書效期起迄日)、wmin、wmax、hmin、hmax、hardware(五金名稱或編號的陣列,找不到的名稱會自動建立五金)、note。</p>
+<textarea id="jc" spellcheck="false"></textarea>
+<div class="row"><button class="btn alt" id="jc-add">證書 JSON 新增</button></div>
+</div>
+<div id="a-cl" hidden>
+<h2>證書清單</h2>
+<h3 style="font-size:15px;margin:6px 0 8px">共 <span id="ccnt">0</span> 筆</h3>
+<div id="clist"></div>
+</div>
+<div id="a-bk" hidden>
+<div class="row"><button class="chipbtn" data-bk="rs" aria-pressed="true">還原</button><button class="chipbtn" data-bk="ex" aria-pressed="false">匯出</button></div>
+<div id="bk-rs">
+<h2>五金還原</h2>
+<div class="box">
+<p class="note">貼上五金 JSON(五金陣列,或備份中的 hw),會取代目前所有五金。原本證書上的五金會依編號或名稱重新對應,對應不到的會被移除。</p>
+<textarea id="bk-hw" spellcheck="false"></textarea>
+<div class="row"><button class="btn alt" id="bk-hw-go">五金還原</button></div>
+</div>
+<h2>證書還原</h2>
+<div class="box">
+<p class="note">貼上證書 JSON(證書陣列,或備份中的 certs),會取代目前所有證書。證書的五金會對應目前的五金清單。</p>
+<textarea id="bk-cert" spellcheck="false"></textarea>
+<div class="row"><button class="btn alt" id="bk-cert-go">證書還原</button></div>
+</div>
+<h2>還原(取代全部)</h2>
+<div class="box">
+<p class="note">貼上完整備份(含 hw 與 certs),會取代目前所有五金與證書。</p>
+<textarea id="bk-all" spellcheck="false"></textarea>
+<div class="row"><button class="btn alt" id="bk-all-go">還原(取代全部)</button></div>
+</div>
+</div>
+<div id="bk-ex" hidden>
+<h2>匯出</h2>
+<div class="box">
+<p class="note">選擇要匯出的內容,JSON 會顯示在下方,按「複製」即可保存。匯出證書時,五金會以名稱表示,方便日後對應。</p>
+<div class="row"><button class="btn" id="x-hw">匯出五金</button><button class="btn" id="x-cert">匯出證書</button><button class="btn" id="x-run">匯出全部</button></div>
+<textarea id="x-out" spellcheck="false" readonly></textarea>
+<div class="row"><button class="btn alt" id="x-copy">複製</button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
 </main>
 <script>
-(function(){
-var KEY="growth-v1",S={kids:[],cur:0},metric="h";
-function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.kids&&o.kids.length)S=o}}catch(e){}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-load();
-if(!S.kids.length){S={kids:[{name:"寶貝",recs:[]}],cur:0}}
-var $=function(i){return document.getElementById(i)};
-function kid(){return S.kids[S.cur]}
-function sorted(){return kid().recs.slice().sort(function(a,b){return a.d<b.d?-1:1})}
-function fmt(d){var p=d.split("-");return +p[1]+"/"+ +p[2]}
-function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function ico(k){var f=k.g=="f";return k.type=="adult"?(f?"👩":"👨"):(f?"👧":"👦")}
-function renderKids(){
-  $("kids").innerHTML=S.kids.map(function(k,i){return '<button class="kid" data-i="'+i+'" aria-pressed="'+(i==S.cur)+'">'+ico(k)+" "+esc(k.name)+'</button>'}).join("");
-}
-function bmiRow(l){
-  var b=l.w/Math.pow(l.h/100,2),c=b<18.5?"過輕":b<24?"正常":b<27?"過重":"肥胖";
-  return '<div style="grid-column:1/-1;border-top:1px solid var(--line);padding-top:10px"><small>BMI</small><b style="font-size:24px;color:var(--ink)">'+b.toFixed(1)+'<span style="font-size:14px;font-weight:600"> '+c+'</span></b></div>';
-}
-function renderNow(){
-  var r=sorted(),l=r[r.length-1],p=r[r.length-2],hf=!!(l&&l.f!=null);
-  $("now").className="card now"+(hf?" a":"");$("now").style.gridTemplateColumns=hf?"1fr 1fr 1fr":"1fr 1fr";
-  if(!l){$("now").innerHTML='<p class="empty" style="grid-column:1/-1">還沒有紀錄，從下方新增第一筆。</p>';return}
-  function dl(a,b,u){if(!p||a==null||b==null)return"";var x=+(a-b).toFixed(2);return '<span class="up">較上次 '+(x>=0?"+":"")+x+" "+u+"</span>"}
-  $("now").innerHTML='<div><small>身高</small><b>'+l.h+'<span style="font-size:15px"> cm</span></b>'+dl(l.h,p&&p.h,"cm")+'</div><div><small>體重</small><b>'+l.w+'<span style="font-size:15px"> kg</span></b>'+dl(l.w,p&&p.w,"kg")+'</div>'+(hf?'<div><small>體脂肪</small><b>'+l.f+'<span style="font-size:15px"> %</span></b>'+dl(l.f,p&&p.f,"%")+'</div>':'')+(kid().type=="adult"?bmiRow(l):"")+'<div class="up" style="grid-column:1/-1">最近紀錄：'+l.d+'</div>';
-}
-function renderChart(){
-  var r=sorted().filter(function(x){return x[metric]!=null}),W=360,H=230,L=38,R=14,T=14,B=28,c=metric=="h"?"var(--h)":metric=="w"?"var(--w)":"var(--f)";
-  if(r.length<2){$("chart").innerHTML='<p class="empty">至少需要 2 筆紀錄才能畫出曲線。</p>';return}
-  var v=r.map(function(x){return x[metric]}),mn=Math.min.apply(0,v),mx=Math.max.apply(0,v),pad=(mx-mn||1)*.2;
-  mn=Math.floor(mn-pad);mx=Math.ceil(mx+pad);
-  var t0=new Date(r[0].d).getTime(),t1=new Date(r[r.length-1].d).getTime()||t0+1,span=t1-t0||1;
-  function X(d){return L+(new Date(d).getTime()-t0)/span*(W-L-R)}
-  function Y(y){return T+(1-(y-mn)/(mx-mn))*(H-T-B)}
-  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="成長曲線圖">';
-  for(var i=0;i<=4;i++){var yv=mn+(mx-mn)*i/4,y=Y(yv);s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" fill="var(--sub)">'+(+yv.toFixed(1))+'</text>'}
-  var pts=r.map(function(x){return X(x.d).toFixed(1)+","+Y(x[metric]).toFixed(1)});
-  s+='<polygon points="'+X(r[0].d)+","+(H-B)+" "+pts.join(" ")+" "+X(r[r.length-1].d)+","+(H-B)+'" fill="'+c+'" opacity=".12"/>';
-  s+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+c+'" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
-  var step=Math.ceil(r.length/5);
-  r.forEach(function(x,i){
-    s+='<circle cx="'+X(x.d)+'" cy="'+Y(x[metric])+'" r="4.5" fill="var(--card)" stroke="'+c+'" stroke-width="2.5"/>';
-    s+='<circle class="hit" data-i="'+i+'" cx="'+X(x.d)+'" cy="'+Y(x[metric])+'" r="16" fill="transparent"/>';
-    if(i%step==0||i==r.length-1)s+='<text x="'+X(x.d)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="var(--sub)">'+fmt(x.d)+'</text>';
-  });
-  $("chart").innerHTML=s+"</svg>";
-}
-function renderList(){
-  var r=sorted().reverse(),ad=kid().type=="adult";
-  if(!r.length){$("list").innerHTML='<p class="empty">尚無紀錄</p>';return}
-  $("list").innerHTML='<table><tr><th>日期</th><th>身高</th><th>體重</th>'+(ad?'<th>體脂</th>':'')+'<th></th></tr>'+r.map(function(x){return '<tr><td>'+x.d+'</td><td>'+x.h+' cm</td><td>'+x.w+' kg</td>'+(ad?'<td>'+(x.f!=null?x.f+' %':'–')+'</td>':'')+'<td><button class="del" data-id="'+x.id+'" aria-label="刪除 '+x.d+' 的紀錄">×</button></td></tr>'}).join("")+'</table>';
-}
-function all(){var ad=kid().type=="adult";$("tF").hidden=!ad;$("bfWrap").hidden=!ad;$("bf").required=false;if(!ad&&metric=="f")setM("h");renderKids();renderNow();renderChart();renderList();$("tip").textContent="點選圖上的點可查看數值"}
-$("kids").onclick=function(e){var b=e.target.closest(".kid");if(b){S.cur=+b.dataset.i;save();all()}};
-function setM(m){metric=m;$("tH").setAttribute("aria-pressed",m=="h");$("tW").setAttribute("aria-pressed",m=="w");$("tF").setAttribute("aria-pressed",m=="f");renderChart()}
-$("tH").onclick=function(){setM("h")};$("tW").onclick=function(){setM("w")};$("tF").onclick=function(){setM("f")};
-$("chart").onclick=function(e){
-  var h=e.target.closest(".hit");if(!h)return;
-  var x=sorted().filter(function(y){return y[metric]!=null})[+h.dataset.i];
-  $("tip").textContent=x.d+"　身高 "+x.h+" cm　體重 "+x.w+" kg"+(x.f!=null?"　體脂肪 "+x.f+" %":"")+(kid().type=="adult"?"　BMI "+(x.w/Math.pow(x.h/100,2)).toFixed(1):"");
-};
-$("f").onsubmit=function(e){
-  e.preventDefault();
-  kid().recs.push({id:Date.now()+"",d:$("d").value,h:+$("h").value,w:+$("w").value,f:(kid().type=="adult"&&$("bf").value!=="")?+$("bf").value:undefined});
-  save();$("h").value="";$("w").value="";$("bf").value="";all();
-};
-$("list").onclick=function(e){
-  var b=e.target.closest(".del");if(!b)return;
-  ask("確定刪除這筆紀錄？",false,function(){
-    kid().recs=kid().recs.filter(function(x){return x.id!==b.dataset.id});save();all();
-  });
-};
-var onYes=null,newType="child";
-function setT(t){newType=t;[].forEach.call(document.querySelectorAll(".tp"),function(x){x.setAttribute("aria-pressed",x.dataset.t==t)})}
-$("pType").onclick=function(e){var b=e.target.closest(".tp");if(b)setT(b.dataset.t)};
-var newG="m";
-function setG(g){newG=g;[].forEach.call(document.querySelectorAll(".tg"),function(x){x.setAttribute("aria-pressed",x.dataset.g==g)})}
-$("pGen").onclick=function(e){var b=e.target.closest(".tg");if(b)setG(b.dataset.g)};
-function ask(msg,input,cb){
-  $("pMsg").textContent=msg;$("pIn").hidden=!input;$("pType").hidden=!input;$("pGen").hidden=!input;if(input){setT("child");setG("m")}$("pIn").value="";
-  onYes=cb;$("panel").hidden=false;
-  $("panel").scrollIntoView({block:"center"});
-  if(input)$("pIn").focus();
-}
-function closeP(){$("panel").hidden=true;onYes=null}
-$("pNo").onclick=closeP;
-$("pYes").onclick=function(){var cb=onYes;if(cb)cb($("pIn").value);closeP()};
-$("pIn").onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();$("pYes").click()}};
-$("addKid").onclick=function(){
-  ask("新增成員：選擇類型、性別，並輸入名字",true,function(n){
-    n=(n||"").trim();
-    if(n){S.kids.push({name:n,type:newType,g:newG,recs:[]});S.cur=S.kids.length-1;save();all()}
-  });
-};
-$("rmKid").onclick=function(){
-  if(S.kids.length<2){ask("至少要保留一位成員，無法刪除。",false,null);return}
-  ask("刪除「"+kid().name+"」與所有紀錄？",false,function(){
-    S.kids.splice(S.cur,1);S.cur=0;save();all();
-  });
-};
-var t=new Date();$("d").value=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
-all();
-})();
+// ===== 請自行修改管理者密碼 =====
+var ADMIN_PW="admin1234";
+var SEED={hw:[],certs:[]};
+var HW=[],CERTS=[],admin=false,dbDoc=null,LS="certlookup.data.v3",OLD="certlookup.certs.v2",selCert="",selCat="",editC=-1,editH=-1,pick={};
+function $(i){return document.getElementById(i)}
+function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
+function norm(s){return String(s||"").toLowerCase().replace(/[\s\u3000]+/g,"")}
+function arr(x){return Array.isArray(x)?x.map(function(v){return String(v).trim()}).filter(Boolean):(x?[String(x).trim()]:[])}
+function num(v){if(v===""||v==null)return null;var n=Number(v);return isFinite(n)?n:null}
+function ckey(c){return norm(c.name+"|"+c.no)}
+function hwBy(id){return HW.filter(function(h){return h.id===id})[0]}
+function findHw(n){var k=norm(n);return HW.filter(function(h){return h.id===String(n)||norm(h.name)===k||h.alias.some(function(a){return norm(a)===k})})[0]}
+function nextId(){var m=0;HW.forEach(function(h){var n=parseInt(String(h.id).replace(/\D/g,""),10)||0;if(n>m)m=n});return"H"+String(m+1).padStart(3,"0")}
+function mkHw(n){var h={id:nextId(),name:String(n).trim(),alias:[],cat:"",spec:""};HW.push(h);return h}
+function cleanHw(o){return{id:String(o.id||""),name:String(o.name||"").trim(),alias:arr(o.alias),cat:String(o.cat||"").trim(),spec:(Array.isArray(o.same)&&o.same.length?o.same.join("、"):String((Array.isArray(o.same)?"":o.same)||o.spec||"")).trim(),note:String(o.note||"").trim()}}
+function nd(v){var m=String(v||"").match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);return m?m[1]+"-"+("0"+m[2]).slice(-2)+"-"+("0"+m[3]).slice(-2):""}
+function fd(v){var m=String(v||"").match(/(\d{4})-(\d{2})-(\d{2})/);return m?m[1]+"年"+(+m[2])+"月"+(+m[3])+"日":""}
+function cleanC(o){var ids=[];arr(o.hardware||o.apply).forEach(function(x){var h=findHw(x)||mkHw(x);if(ids.indexOf(h.id)<0)ids.push(h.id)});
+ return{name:String(o.name||"").trim(),no:String(o.no||"").trim(),vfrom:nd(o.vfrom),vto:nd(o.vto),fire:(["60A","60B","120A"].indexOf(String(o.fire||"").trim().toUpperCase())>-1?String(o.fire).trim().toUpperCase():""),door:(/雙/.test(o.door)?"雙開":/單/.test(o.door)?"單開":""),wmin:num(o.wmin),wmax:num(o.wmax),hmin:num(o.hmin),hmax:num(o.hmax),hardware:ids,note:String(o.note||"").trim()}}
+function migrate0(d){HW=[];
+ if(Array.isArray(d)){CERTS=d.map(cleanC)}
+ else if(d&&d.certs){(d.hw||[]).forEach(function(o){var h=cleanHw(o);if(!h.name)return;if(!h.id)h.id=nextId();HW.push(h)});CERTS=d.certs.map(cleanC)}}
+function purgeSample(){var gone={},ids={};
+ CERTS=CERTS.filter(function(c){if(c.note==="範例資料"){c.hardware.forEach(function(i){gone[i]=1});return false}return true});
+ CERTS.forEach(function(c){c.hardware.forEach(function(i){ids[i]=1})});
+ HW=HW.filter(function(h){if(h.spec==="範例資料")return false;if(gone[h.id]&&!ids[h.id]&&!h.cat&&!h.spec&&!h.alias.length)return false;return true});
+ var ok={};HW.forEach(function(h){ok[h.id]=1});CERTS.forEach(function(c){c.hardware=c.hardware.filter(function(i){return ok[i]})})}
+function migrate(d){migrate0(d);purgeSample()}
+function load(){var s;try{s=JSON.parse(localStorage.getItem(LS));if(s&&s.certs){migrate(s);return}}catch(e){}
+ try{s=JSON.parse(localStorage.getItem(OLD));if(Array.isArray(s)&&s.length){migrate(s);return}}catch(e){}
+ migrate(JSON.parse(JSON.stringify(SEED)))}
+function dump(){return JSON.stringify({v:2,hw:HW,certs:CERTS})}
+function saveLocal(){try{localStorage.setItem(LS,dump())}catch(e){}}
+var dirty=false,cpick={};
+async function persist(){saveLocal();
+ if(dbDoc){try{await Promise.race([dbDoc.set({json:dump()}),new Promise(function(_,r){setTimeout(function(){r(new Error("逾時"))},6000)})]);dirty=false;return"已儲存並同步給所有使用者"}
+  catch(e){dirty=true;return"同步失敗("+((e&&(e.code||e.message))||"未知原因")+"),資料只存在此裝置"}}
+ return"已儲存在此裝置(其他人看不到)"}
+async function initDb(){try{var c=window.claude&&await claude.use("db");if(!c)return;dbDoc=c.doc("store/certs");
+ dbDoc.onSnapshot(function(s){if(dirty||(s.metadata&&s.metadata.hasPendingWrites))return;if(s.exists){try{var a=JSON.parse(s.data().json);var ok=Array.isArray(a)||(a&&Array.isArray(a.certs));if(ok){migrate(a);saveLocal();render()}}catch(e){}}},function(){});
+ if(admin)$("status").textContent="管理模式(雲端同步)"}catch(e){}}
+// ===== 模糊搜尋:連續兩字相同即視為相似 =====
+function grams(s){var g={},i;for(i=0;i<s.length-1;i++)g[s.substr(i,2)]=1;return g}
+function sc(h,q){h=norm(h);q=norm(q);if(!q)return 1;if(h.indexOf(q)>-1)return 100+q.length;if(q.length<2)return 0;
+ var qg=grams(q),hg=grams(h),n=0,t=0,k;for(k in qg){t++;if(hg[k])n++}return n?n+n/t:0}
+function hs(h,q){return Math.max.apply(null,[h.name].concat(h.alias,[h.cat,h.spec]).map(function(f){return sc(f,q)}))}
+function rng(a,b){return a==null&&b==null?"":(a==null?"":a)+" ~ "+(b==null?"":b)+" mm"}
+var CATS=["門鎖","鉸鏈","門弓器","配件","取手","材質","玻璃","其他"],LEG={"鎖類":"門鎖","鉸鏈類":"鉸鏈","取手類":"取手","門弓器類":"門弓器","閉門器類":"門弓器","門體":"材質"};
+function catOf(h){var c=h.cat;return CATS.indexOf(c)>-1?c:(LEG[c]||"其他")}
+function hwGroups(c,hl){var hs=c.hardware.map(hwBy).filter(Boolean);
+ return CATS.map(function(k){var l=hs.filter(function(h){return catOf(h)===k});
+  return l.length?'<dt>'+k+'</dt><dd>'+l.map(function(h){return'<span class="'+(hl&&hl[h.id]?'tag':'chip')+'">'+esc(h.name)+'</span>'}).join("")+'</dd>':""}).join("")}
+function cardCert(c,hl){return'<article class="item"><h3>'+esc(c.name)+'</h3><dl>'+
+ ((c.no||c.door)?'<dt>號碼</dt><dd>'+(c.no?'<span class="tag">'+esc(c.no)+'</span>':'')+(c.door?'<span class="chip">'+esc(c.door)+'</span>':'')+'</dd>':'')+
+ ((c.vfrom||c.vto)?'<dt>驗證登錄<br>證書效期</dt><dd>'+(fd(c.vfrom)||'—')+' ~ '+(fd(c.vto)||'—')+'</dd>':'')+
+ (c.fire?'<dt>防火等級</dt><dd><span class="tag">'+esc(c.fire)+'</span></dd>':'')+
+ (rng(c.wmin,c.wmax)?'<dt>門扇寬</dt><dd>'+rng(c.wmin,c.wmax)+'</dd>':'')+
+ (rng(c.hmin,c.hmax)?'<dt>門扇高</dt><dd>'+rng(c.hmin,c.hmax)+'</dd>':'')+
+ hwGroups(c,hl)+
+ (c.note?'<dt>備註</dt><dd>'+esc(c.note)+'</dd>':'')+'</dl></article>'}
+function usedBy(h){return CERTS.filter(function(c){return c.hardware.indexOf(h.id)>-1})}
+function hwCard(h){var u=usedBy(h);return'<article class="item"><h3>'+esc(h.name)+(h.cat?' <span class="chip">'+esc(h.cat)+'</span>':'')+'</h3><dl>'+
+ (h.alias.length?'<dt>別名</dt><dd>'+esc(h.alias.join("、"))+'</dd>':'')+(h.spec?'<dt>同型式</dt><dd>'+esc(h.spec)+'</dd>':'')+
+ '<dt>證書</dt><dd>'+(u.length?u.map(function(c){return'<button class="tag" data-cert="'+esc(ckey(c))+'">'+esc(c.name+(c.no?' '+c.no:''))+'</button>'}).join(""):'<span class="note">尚無證書使用</span>')+'</dd></dl></article>'}
+// ===== 顯示 =====
+function renderCerts(){$("r-cert").innerHTML=CERTS.length?CERTS.map(function(c){return cardCert(c)}).join(""):'<p class="empty">目前沒有證書資料</p>'}
+var mode="cert";
+function hwLine(h,nc){return'<article class="item"><h3>'+esc(h.name)+(h.cat&&!nc?' <span class="chip">'+esc(h.cat)+'</span>':'')+'</h3>'+((h.alias.length||h.spec||h.note)?'<dl>'+(h.alias.length?'<dt>別名</dt><dd>'+esc(h.alias.join("、"))+'</dd>':'')+(h.spec?'<dt>同型式</dt><dd>'+esc(h.spec)+'</dd>':'')+(h.note?'<dt>備註</dt><dd>'+esc(h.note)+'</dd>':'')+'</dl>':'')+'</article>'}
+var CATS2=["材質","門鎖","鉸鏈","門弓器","配件","取手","玻璃","其他"];
+function grp(l){return CATS2.map(function(k){var g=l.filter(function(h){return catOf(h)===k});return g.length?'<h3 class="gh">'+k+'('+g.length+')</h3>'+g.map(function(h){return hwLine(h,1)}).join(""):""}).join("")}
+function renderPick(){
+ $("m-cert").hidden=mode!=="cert";$("m-hw").hidden=mode!=="hw";
+ document.querySelectorAll("[data-mode]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.mode===mode)});
+ $("cs").innerHTML='<option value="">請選擇證書…</option>'+CERTS.map(function(c){var k=ckey(c);return'<option value="'+esc(k)+'"'+(k===selCert?' selected':'')+'>'+esc(c.name+(c.no?'('+c.no+')':''))+'</option>'}).join("");
+ var cur=CERTS.filter(function(c){return ckey(c)===selCert})[0];if(!cur){selCert="";$("cs").value=""}
+ var hs2=cur?cur.hardware.map(hwBy).filter(Boolean).sort(function(a,b){return CATS.indexOf(catOf(a))-CATS.indexOf(catOf(b))}):[];
+ $("r-pick").innerHTML=cur?'<h2>五金清單('+hs2.length+')</h2>'+(grp(hs2)||'<p class="note">此證書尚未歸類任何五金</p>'):'<p class="empty">請選擇證書,下方會列出它的五金清單</p>';
+ var q=$("pq").value,ex=[],sm=[];
+ if(!q&&!selCat){$("r-hw").innerHTML='<p class="empty">輸入五金名稱,會列出有這個五金的證書資訊</p>';return}
+ HW.forEach(function(h){if(selCat&&h.cat!==selCat)return;var v=q?hs(h,q):100;if(v>=100)ex.push(h);else if(v>0)sm.push(h)});
+ var hl={};ex.concat(sm).forEach(function(h){hl[h.id]=1});
+ function certsOf(l){var m={};l.forEach(function(h){m[h.id]=1});return CERTS.filter(function(c){return c.hardware.some(function(id){return m[id]})})}
+ var ce=certsOf(ex),cm=certsOf(sm).filter(function(c){return ce.indexOf(c)<0});
+ var f=function(l){return l.map(function(c){return cardCert(c,hl)}).join("")};
+ $("r-hw").innerHTML=(ce.length||cm.length)?'<h2>有此五金的證書</h2>'+f(ce)+(cm.length?'<p class="sim">'+(ce.length?'相似結果':'沒有完全符合,以下是相似結果')+'</p>'+f(cm.slice(0,20)):""):'<p class="empty">找不到有此五金的證書。</p>'}
+function render(){renderCerts();renderPick();if(admin)renderAdmin()}
+// ===== 管理頁 =====
+function renderAdmin(){renderCPicker();renderJhSel();
+ renderHl();$("ccnt").textContent=CERTS.length;
+ $("clist").innerHTML=CERTS.map(function(c,i){return'<div class="item"><h3>'+esc(c.name)+'</h3><div class="note">'+esc(c.no)+(c.door?' ・ '+esc(c.door):'')+(c.fire?' ・ '+esc(c.fire):'')+' ・ '+(c.hardware.length?c.hardware.length+' 項五金':'<span class="warn">尚未選擇五金</span>')+'</div><div class="row"><button class="btn alt sm" data-ec="'+i+'">編輯</button><button class="btn alt sm" data-dc="'+i+'">刪除</button></div></div>'}).join("")}
+function setCat(v){var e=$("h-cat");[].slice.call(e.querySelectorAll("[data-tmp]")).forEach(function(o){o.remove()});
+ if(v&&![].some.call(e.options,function(o){return o.value===v})){var o=document.createElement("option");o.value=v;o.textContent=v+"(舊分類)";o.dataset.tmp="1";e.appendChild(o)}e.value=v||""}
+function renderJhSel(){var v=$("jh-cert").value;
+ $("jh-cert").innerHTML='<option value="">不指定(只新增五金)</option>'+CERTS.map(function(c){return'<option value="'+esc(ckey(c))+'">'+esc(c.name+(c.no?'('+c.no+')':''))+'</option>'}).join("");$("jh-cert").value=v}
+function renderHl(){var sel=$("hl-cert"),v=sel.value;
+ sel.innerHTML='<option value="">全部五金</option><option value="__none">尚未歸類到證書</option>'+CERTS.map(function(c){return'<option value="'+esc(ckey(c))+'">'+esc(c.name+(c.no?'('+c.no+')':''))+'</option>'}).join("");
+ if(v&&v!=="__none"&&!CERTS.some(function(c){return ckey(c)===v}))v="";sel.value=v;
+ var cur=v&&v!=="__none"?CERTS.filter(function(c){return ckey(c)===v})[0]:null;
+ var list=HW.filter(function(h){return v===""||(v==="__none"?!usedBy(h).length:cur.hardware.indexOf(h.id)>-1)});
+ list.sort(function(a,b){return CATS.indexOf(catOf(a))-CATS.indexOf(catOf(b))});
+ $("hcnt").textContent=list.length;
+ $("hlist").innerHTML=list.length?list.map(function(h){var i=HW.indexOf(h),u=usedBy(h);return'<div class="item"><h3>'+esc(h.name)+'</h3><div class="note">'+esc(catOf(h))+' ・ '+(u.length?'歸類於 '+u.map(function(c){return esc(c.name)}).join("、"):'<span class="warn">未被任何證書使用</span>')+'</div><div class="row"><button class="btn alt sm" data-eh="'+i+'">編輯</button>'+(cur?'<button class="btn alt sm" data-ur="'+i+'">從此證書移除</button>':'')+'<button class="btn alt sm" data-dh="'+i+'">刪除</button></div></div>'}).join(""):'<p class="empty">沒有五金</p>'}
+$("hl-cert").onchange=renderHl;
+function renderCPicker(){
+ $("h-csel").innerHTML='<option value="">選擇證書…</option>'+CERTS.filter(function(c){return!cpick[ckey(c)]}).map(function(c){return'<option value="'+esc(ckey(c))+'">'+esc(c.name+(c.no?'('+c.no+')':''))+'</option>'}).join("");
+ $("cchosen").innerHTML=CERTS.filter(function(c){return cpick[ckey(c)]}).map(function(c){return'<button type="button" class="chip go" data-ux="'+esc(ckey(c))+'">'+esc(c.name)+' ✕</button>'}).join("")||'<p class="note">尚未歸類到任何證書</p>'}
+function syncCerts(id){CERTS.forEach(function(c){var k=ckey(c),i=c.hardware.indexOf(id);if(cpick[k]&&i<0)c.hardware.push(id);else if(!cpick[k]&&i>-1)c.hardware.splice(i,1)})}
+$("h-csel").onchange=function(){if(this.value){cpick[this.value]=true;renderCPicker()}};
+$("cchosen").onclick=function(e){var k=e.target.dataset.ux;if(k){delete cpick[k];renderCPicker()}};
+$("cQuick").onclick=async function(){if(!admin)return;var n=$("h-cnew").value.trim();if(!n)return;
+ var c=CERTS.filter(function(x){return norm(x.name)===norm(n)})[0];if(!c){c=cleanC({name:n});CERTS.push(c)}
+ cpick[ckey(c)]=true;$("h-cnew").value="";var s=await persist();say("已新增並勾選證書「"+c.name+"」。"+s);render()};
+var askKey="",askT=0;
+function ask(k,msg){if(askKey===k&&Date.now()-askT<5000){askKey="";return true}askKey=k;askT=Date.now();say(msg+"。5 秒內再按一次同一個按鈕即可確認。");return false}
+function say(t){$("msg").textContent=t;$("msg").scrollIntoView({block:"nearest"})}
+function clearH(){["h-name","h-alias","h-cat","h-spec","h-note"].forEach(function(i){$(i).value=""});editH=-1;setCat("");cpick={};$("h-cnew").value="";$("h-save").textContent="新增五金"}
+function clearC(){["f-name","f-no","f-door","f-fire","f-vfrom","f-vto","f-wmin","f-wmax","f-hmin","f-hmax","f-note"].forEach(function(i){$(i).value=""});pick={};editC=-1;$("save").textContent="新增證書"}
+$("h-clear").onclick=clearH;$("clear").onclick=clearC;
+$("h-save").onclick=async function(){if(!admin)return;
+ var o=cleanHw({name:$("h-name").value,alias:$("h-alias").value.split(/[,，、]/),cat:$("h-cat").value,spec:$("h-spec").value,note:$("h-note").value});
+ if(!o.name){say("請填五金名稱");return}
+ if(editH>=0){o.id=HW[editH].id;HW[editH]=o}else{var ex=findHw(o.name);if(ex){o.id=ex.id;HW[HW.indexOf(ex)]=o}else{o.id=nextId();HW.push(o)}}
+ syncCerts(o.id);var nm=o.name;clearH();render();say("已新增五金「"+nm+"」,儲存中…");var s=await persist();say("已儲存五金「"+nm+"」。"+s)};
+$("save").onclick=async function(){if(!admin)return;
+ var o=cleanC({name:$("f-name").value,no:$("f-no").value,door:$("f-door").value,fire:$("f-fire").value,vfrom:$("f-vfrom").value,vto:$("f-vto").value,wmin:$("f-wmin").value,wmax:$("f-wmax").value,hmin:$("f-hmin").value,hmax:$("f-hmax").value,hardware:Object.keys(pick).filter(function(k){return pick[k]}),note:$("f-note").value});
+ if(!o.name){say("請填證書名稱");return}
+ if(o.vfrom&&o.vto&&o.vfrom>o.vto){say("效期的起日不能晚於迄日");return}
+ if((o.wmin!=null&&o.wmax!=null&&o.wmin>o.wmax)||(o.hmin!=null&&o.hmax!=null&&o.hmin>o.hmax)){say("尺寸範圍的最小值不能大於最大值");return}
+ if(editC>=0)CERTS[editC]=o;else{var i=-1;CERTS.forEach(function(c,n){if(ckey(c)===ckey(o))i=n});if(i>=0)CERTS[i]=o;else CERTS.push(o)}
+ var nm=o.name;clearC();render();say("已新增證書「"+nm+"」,儲存中…");var s=await persist();say("已儲存證書「"+nm+"」。"+s)};
+$("hlist").onclick=async function(e){if(!admin)return;var t=e.target.dataset;
+ if(t.eh!==undefined){var h=HW[+t.eh];editH=+t.eh;$("h-name").value=h.name;$("h-alias").value=h.alias.join("、");setCat(h.cat);$("h-spec").value=h.spec;$("h-note").value=h.note||"";$("h-save").textContent="更新五金";cpick={};usedBy(h).forEach(function(c){cpick[ckey(c)]=true});renderCPicker();showSub("hw");$("h-name").scrollIntoView({block:"center"})}
+ if(t.ur!==undefined){var k=$("hl-cert").value,c=CERTS.filter(function(x){return ckey(x)===k})[0],h2=HW[+t.ur];if(!c||!h2)return;
+  if(!ask("ur"+t.ur,"將「"+h2.name+"」從證書「"+c.name+"」移除(五金本身不會刪除)"))return;
+  c.hardware.splice(c.hardware.indexOf(h2.id),1);render();say("已從證書移除,儲存中…");var s2=await persist();say("已從證書「"+c.name+"」移除「"+h2.name+"」。"+s2)}
+ if(t.dh!==undefined){var d=HW[+t.dh],u=usedBy(d);
+  if(!ask("dh"+t.dh,"將刪除五金「"+d.name+"」"+(u.length?",並從 "+u.length+" 張證書移除:"+u.map(function(c){return c.name}).join("、"):"")))return;
+  u.forEach(function(c){c.hardware.splice(c.hardware.indexOf(d.id),1)});HW.splice(HW.indexOf(d),1);
+  render();say("已刪除五金「"+d.name+"」,儲存中…");var s=await persist();say("已刪除五金「"+d.name+"」。"+s)}};
+$("clist").onclick=async function(e){if(!admin)return;var t=e.target.dataset;
+ if(t.ec!==undefined){var c=CERTS[+t.ec];editC=+t.ec;$("f-name").value=c.name;$("f-no").value=c.no;$("f-door").value=c.door;$("f-fire").value=c.fire||"";$("f-vfrom").value=c.vfrom||"";$("f-vto").value=c.vto||"";$("f-wmin").value=c.wmin==null?"":c.wmin;$("f-wmax").value=c.wmax==null?"":c.wmax;$("f-hmin").value=c.hmin==null?"":c.hmin;$("f-hmax").value=c.hmax==null?"":c.hmax;$("f-note").value=c.note;
+  pick={};c.hardware.forEach(function(id){pick[id]=true});$("save").textContent="更新證書";showSub("cert");$("f-name").scrollIntoView({block:"center"})}
+ if(t.dc!==undefined){var cn=CERTS[+t.dc].name;if(!ask("dc"+t.dc,"將刪除證書「"+cn+"」"))return;CERTS.splice(+t.dc,1);render();say("已刪除證書「"+cn+"」,儲存中…");var s=await persist();say("已刪除證書「"+cn+"」。"+s)}};
+function parseJ(id,need){var t=$(id).value.trim();if(!t){say("請先貼上 JSON");return null}
+ try{var a=JSON.parse(t);if(!Array.isArray(a))a=[a];if(a.some(function(o){return!o||typeof o!=="object"||!String(o.name||"").trim()})){say("有資料缺少 name("+need+"名稱)");return null}return a}catch(e){say("JSON 格式錯誤:"+e.message);return null}}
+$("jh-add").onclick=async function(){if(!admin)return;var a=parseJ("jh","五金");if(!a)return;var n=0,u=0,ids=[];
+ var sm=$("jh-same").value.trim(),tk=$("jh-cert").value,tc=tk?CERTS.filter(function(c){return ckey(c)===tk})[0]:null;
+ a.forEach(function(r){var o=cleanHw(r),ex=findHw(o.name);if(sm&&!o.spec)o.spec=sm;
+  if(ex){o.id=ex.id;HW[HW.indexOf(ex)]=o;u++}else{if(!o.id||hwBy(o.id))o.id=nextId();HW.push(o);n++}
+  ids.push(o.id);
+  arr(r.certs).forEach(function(nm){var c=CERTS.filter(function(x){return norm(x.name)===norm(nm)||ckey(x)===norm(nm)})[0];if(!c){c=cleanC({name:nm});CERTS.push(c)}if(c.hardware.indexOf(o.id)<0)c.hardware.push(o.id)})});
+ if(tc)ids.forEach(function(id){if(tc.hardware.indexOf(id)<0)tc.hardware.push(id)});
+ var s=await persist();say("五金新增 "+n+" 筆、更新 "+u+" 筆"+(tc?",並歸類到證書「"+tc.name+"」(共 "+ids.length+" 項)":"")+"。"+s);$("jh").value="";$("jh-same").value="";render()};
+$("jc-add").onclick=async function(){if(!admin)return;var a=parseJ("jc","證書");if(!a)return;var n=0,u=0;
+ a.map(cleanC).forEach(function(o){var i=-1;CERTS.forEach(function(c,k){if(ckey(c)===ckey(o))i=k});if(i>=0){CERTS[i]=o;u++}else{CERTS.push(o);n++}});
+ var s=await persist();say("證書新增 "+n+" 筆、更新 "+u+" 筆。"+s);$("jc").value="";render()};
+function readJ(id){var t=$(id).value.trim();if(!t){say("請先貼上 JSON");return null}try{return JSON.parse(t)}catch(e){say("JSON 格式錯誤:"+e.message);return null}}
+function countLinks(){var n=0;CERTS.forEach(function(c){n+=c.hardware.length});return n}
+function setHw(a){var used={},out=[];a.forEach(function(o){var h=cleanHw(o||{});if(h.name)out.push(h)});
+ out.forEach(function(h){if(h.id&&!used[h.id])used[h.id]=1;else h.id=""});
+ var n=0;out.forEach(function(h){if(!h.id){var id;do{n++;id="H"+String(n).padStart(3,"0")}while(used[id]);used[id]=1;h.id=id}});HW=out}
+$("x-run").onclick=function(){$("x-out").value=JSON.stringify({hw:HW,certs:CERTS},null,1);say("已匯出 "+HW.length+" 項五金、"+CERTS.length+" 張證書,可按「複製」保存。")};
+$("x-hw").onclick=function(){$("x-out").value=JSON.stringify(HW,null,1);say("已匯出 "+HW.length+" 項五金,可按「複製」保存。")};
+$("x-cert").onclick=function(){var out=CERTS.map(function(c){var r={};for(var k in c)r[k]=c[k];r.hardware=c.hardware.map(function(id){var h=hwBy(id);return h?h.name:null}).filter(Boolean);return r});$("x-out").value=JSON.stringify(out,null,1);say("已匯出 "+out.length+" 張證書,可按「複製」保存。")};
+document.querySelectorAll("[data-bk]").forEach(function(b){b.onclick=function(){var k=b.dataset.bk;$("bk-rs").hidden=k!=="rs";$("bk-ex").hidden=k!=="ex";document.querySelectorAll("[data-bk]").forEach(function(x){x.setAttribute("aria-pressed",x===b)})}});
+$("x-copy").onclick=async function(){var t=$("x-out");if(!t.value){say("請先按「匯出全部」");return}
+ try{await navigator.clipboard.writeText(t.value);say("已複製到剪貼簿")}catch(e){t.select();try{document.execCommand("copy");say("已複製到剪貼簿")}catch(e2){say("請長按文字框選取後手動複製")}}};
+$("bk-hw-go").onclick=async function(){if(!admin)return;var d=readJ("bk-hw");if(!d)return;var a=Array.isArray(d)?d:(d&&d.hw);
+ if(!Array.isArray(a)){say("找不到五金資料(需為五金陣列,或含 hw 的備份)");return}
+ if(!ask("rhw","將用這 "+a.length+" 項五金取代目前所有五金"))return;
+ var old={},ex={},before=countLinks();HW.forEach(function(h){old[h.id]=h.name});a.forEach(function(o){if(o&&o.id)ex[o.id]=1});setHw(a);
+ CERTS.forEach(function(c){var ids=[];c.hardware.forEach(function(id){var h=(old[id]&&findHw(old[id]))||(ex[id]&&hwBy(id));if(h&&ids.indexOf(h.id)<0)ids.push(h.id)});c.hardware=ids});
+ var lost=before-countLinks();render();say("已還原 "+HW.length+" 項五金"+(lost>0?",並移除 "+lost+" 個失效的證書連結":"")+",儲存中…");var s=await persist();say("五金還原完成:共 "+HW.length+" 項"+(lost>0?",移除 "+lost+" 個失效連結":"")+"。"+s)};
+$("bk-cert-go").onclick=async function(){if(!admin)return;var d=readJ("bk-cert");if(!d)return;var a=Array.isArray(d)?d:(d&&d.certs);
+ if(!Array.isArray(a)||a.some(function(o){return!o||!String(o.name||"").trim()})){say("證書資料需為陣列,且每筆都要有 name");return}
+ if(!ask("rcert","將用這 "+a.length+" 張證書取代目前所有證書"))return;
+ var drop=0,made=0;
+ CERTS=a.map(function(o){var ids=[];arr(o.hardware||o.apply).forEach(function(x){var h=findHw(x);if(!h){if(/^H\d+$/i.test(x)){drop++;return}h=mkHw(x);made++}if(ids.indexOf(h.id)<0)ids.push(h.id)});
+  var r={};for(var k in o)r[k]=o[k];r.hardware=ids;return cleanC(r)});
+ render();say("已還原 "+CERTS.length+" 張證書,儲存中…");var s=await persist();
+ say("證書還原完成:共 "+CERTS.length+" 張"+(made?",自動建立 "+made+" 項新五金":"")+(drop?",有 "+drop+" 個找不到的五金編號已略過":"")+"。"+s)};
+$("bk-all-go").onclick=async function(){if(!admin)return;var d=readJ("bk-all");if(!d)return;
+ if(!Array.isArray(d.certs)){say("備份格式需包含 hw 與 certs");return}
+ if(!ask("rall","將用備份取代所有現有的五金與證書"))return;migrate(d);render();say("已還原,儲存中…");var s=await persist();say("已還原:五金 "+HW.length+" 項、證書 "+CERTS.length+" 張。"+s)};
+// ===== 分頁與連結 =====
+function showTab(t){document.querySelectorAll("nav button").forEach(function(x){x.setAttribute("aria-selected",x.dataset.t===t)});
+ ["cert","pick","admin"].forEach(function(p){$("p-"+p).hidden=p!==t});$("loginLink").classList.toggle("on",t==="admin");window.scrollTo(0,0)}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){showTab(b.dataset.t)}});
+$("loginLink").onclick=function(){showTab("admin")};
+$("cs").onchange=function(){selCert=this.value;render()};
+$("pq").oninput=render;
+document.addEventListener("click",function(e){var el=e.target.closest("[data-mode],[data-cat]");if(!el)return;
+ if(el.dataset.mode){mode=el.dataset.mode;render();return}
+ selCat=selCat===el.dataset.cat?"":el.dataset.cat;render()});
+function setAdmin(on){admin=on;$("loginLink").textContent=on?"管理":"登入";$("login").hidden=on;$("panel").hidden=!on;if(on){$("status").textContent=dbDoc?"管理模式(雲端同步)":"管理模式(僅此裝置)";renderAdmin()}}
+$("loginBtn").onclick=function(){if($("pw").value===ADMIN_PW){$("loginErr").textContent="";$("pw").value="";try{sessionStorage.setItem("certAdmin","1")}catch(e){}setAdmin(true)}else $("loginErr").textContent="密碼錯誤,請再試一次"};
+$("pw").onkeydown=function(e){if(e.key==="Enter")$("loginBtn").click()};
+$("logout").onclick=function(){try{sessionStorage.removeItem("certAdmin")}catch(e){}setAdmin(false)};
+function showSub(a){["hw","hl","cert","cl","bk"].forEach(function(k){$("a-"+k).hidden=k!==a});document.querySelectorAll("[data-sub]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.sub===a)})}
+document.querySelectorAll("[data-sub]").forEach(function(b){b.onclick=function(){showSub(b.dataset.sub)}});
+load();render();initDb();
+try{if(sessionStorage.getItem("certAdmin"))setAdmin(true)}catch(e){}
 </script>
 </body>
 </html>
