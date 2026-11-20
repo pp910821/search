@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>五金證書查詢</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f5d7c'/%3E%3Crect x='9' y='12' width='46' height='34' rx='3' fill='%23fffdf9'/%3E%3Cpath d='M16 21h32M16 28h32M16 35h15' stroke='%232f5d7c' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M38 50l-2 11 8-4 8 4-2-11z' fill='%23d9a93a'/%3E%3Ccircle cx='44' cy='44' r='9' fill='%23f0c75e' stroke='%23d9a93a' stroke-width='2'/%3E%3Ccircle cx='44' cy='44' r='4' fill='none' stroke='%2354420d' stroke-width='1.8'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='1' y='1' width='62' height='62' rx='14' fill='%23fffdf9' stroke='%23e4ded4' stroke-width='2'/%3E%3Crect x='9' y='12' width='46' height='34' rx='3' fill='%23fffdf9' stroke='%232f5d7c' stroke-width='3'/%3E%3Cpath d='M16 21h32M16 28h32M16 35h15' stroke='%232f5d7c' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M38 50l-2 11 8-4 8 4-2-11z' fill='%23d9a93a'/%3E%3Ccircle cx='44' cy='44' r='9' fill='%23f0c75e' stroke='%23d9a93a' stroke-width='2'/%3E%3Ccircle cx='44' cy='44' r='4' fill='none' stroke='%2354420d' stroke-width='1.8'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f6f3ee;--card:#fffdf9;--ink:#2b2926;--mute:#7a746b;--line:#e4ded4;--acc:#2f5d7c;--acc-ink:#fffdf9;--soft:#e9eef1;--tag:#f0dfae;--tag-ink:#54420d;--err:#a6423a;--sh:0 1px 2px rgba(60,50,30,.05),0 6px 18px rgba(60,50,30,.05);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -32,6 +32,7 @@ section{animation:fin .3s ease}
 @media (prefers-reduced-motion:reduce){section{animation:none}nav button{transition:none}}
 input,textarea,select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;min-height:46px}
 select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='m1 1 5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+#cs,#hl-cert,#jh-cert,#h-csel{font-size:13px;letter-spacing:0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;padding-left:12px}
 textarea{font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.6;min-height:130px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 22%,transparent)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
