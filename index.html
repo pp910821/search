@@ -155,7 +155,7 @@ textarea{width:100%;font:inherit;font-size:max(16px,1rem);padding:.55rem .8rem;b
 </style></head><body>
 <header id="hd"><div class="in">
   <div class="top"><h1>立宸實業有限公司<span class="h1s">五金表尺寸、確認</span></h1>
-    <span class="tb"><button class="fb adm" id="bk" hidden>備份區</button><button class="fb adm" id="adm">登入</button></span></div>
+    <span class="tb"><button class="fb adm" id="bk" hidden>備份區</button><button class="fb adm" id="lg" hidden>紀錄</button><button class="fb adm" id="adm">登入</button></span></div>
   <nav id="tabs" role="tablist" aria-label="報告書"></nav>
 </div></header>
 <main class="in">
@@ -219,7 +219,7 @@ function row(i){
   const b=i.b?`<span class="br">${hi(i.b,reB)}</span>`:'';
   const lines=i.m.length?i.m.map((m,k)=>`<div>${k?'':b}${hi(m,reM)}</div>`).join(''):(b?`<div>${b}</div>`:'');
   const pl=i.s.map(x=>`<span class="pl sz">${hi(x)}</span>`).join('')+i.r.map(x=>`<span class="pl nt">${hi(x)}</span>`).join('');
-  return `<li><div><div class="nm">${hi(i.n)}</div>${admin?catSel(i)+(i.x?`<button type="button" class="lnk del" data-del="${i.id}">刪除此筆</button>`:''):''}</div><div><div class="md">${lines}</div>${pl?`<div>${pl}</div>`:''}</div></li>`}
+  return `<li><div><div class="nm">${hi(i.n)}</div>${admin?catSel(i)+(i.x?`<button type="button" class="lnk del" data-del="${i.id}">刪除此筆</button>`:'')+`<button type="button" class="lnk" data-ei="${i.id}">編輯此筆</button>`:''}</div><div><div class="md">${lines}</div>${pl?`<div>${pl}</div>`:''}</div></li>`}
 
 function render(){
   const re=reM||reB,S=DATA.find(s=>s.id===tab),hit=i=>(!reM||i.m.some(m=>reM.test(m))||reM.test(i.m.join(' ')))&&(!reB||reB.test(i.b));
@@ -257,7 +257,7 @@ let CERTS=CERTS0;
 const xv={};
 const exH=id=>admin?`<input id="x-in" class="xin" type="text" maxlength="120" data-id="${id}" value="${esc(xv[id]||'')}" placeholder="可在此新增文字（留空則不顯示）">`:(xv[id]?`<div class="mh-ex">${esc(xv[id])}</div>`:'');
 async function saveEx(id,v){v=v.trim();if(!db){say('尚未連線，無法儲存。');return}
-  try{await db.doc('extra/'+id).set({text:v});xv[id]=v;say('已儲存')}catch(e){say('儲存失敗，請確認你有編輯權限。')}}
+  try{await W('extra/'+id,{text:v});xv[id]=v;say('已儲存')}catch(e){say('儲存失敗，請確認你有編輯權限。')}}
 const certTags=id=>{const c=CERTS.find(x=>x.id===id);return c?c.tags:[]};
 function renderHome(){
   const num=id=>{const v=$(id).value.trim();return v===''||isNaN(+v)?null:+v};
@@ -297,7 +297,7 @@ const noteText=s=>s.id in nv?nv[s.id]:(s.notes[1]||'');
 function renderNote(S){if(!['F22','F28'].includes(S.id)){$('notes').innerHTML='';return}const t=noteText(S);
   $('notes').innerHTML=`<div class="rn${t?' on':''}"><div class="rn-l">單一門扇尺度得縮減使用:</div>`+(admin?`<input id="n-in" class="rn-i" type="text" maxlength="80" data-id="${S.id}" value="${esc(t)}" placeholder="輸入內容（留空則不顯示）">`:(t?`<div class="rn-t">${esc(t)}</div>`:''))+`</div>`}
 async function saveNote(id,v){if(!db)return;v=v.trim();
-  try{await db.doc('notes/'+id).set({text:v});nv[id]=v;say('已儲存')}catch(e){say('儲存失敗，請確認你有編輯權限。')}}
+  try{await W('notes/'+id,{text:v});nv[id]=v;say('已儲存')}catch(e){say('儲存失敗，請確認你有編輯權限。')}}
 $('notes').addEventListener('input',e=>{if(e.target.id==='n-in')e.target.closest('.rn').classList.toggle('on',!!e.target.value.trim())});
 $('notes').addEventListener('change',e=>{if(e.target.id==='n-in')saveNote(e.target.dataset.id,e.target.value)});
 const catList=cc=>[...CATS.filter(c=>cc.has(c)),...[...cc.keys()].filter(c=>!CATS.includes(c))];
@@ -308,9 +308,10 @@ const closeModal=()=>{$('modal').hidden=true};
 function say(m){const e=$('adm-msg'),t=m||(admin?'管理員模式：可修改項目分類、證書資料與標籤（色塊）':'');e.textContent=t;e.hidden=!t}
 function catSel(i){return `<select class="ce" data-id="${i.id}" aria-label="更改分類">${allCats().map(c=>`<option value="${esc(c)}"${c===i.c?' selected':''}>${esc(c)}</option>`).join('')}<option value="__new__">＋ 新增分類…</option></select>`}
 const XI={};
-const applyOv=()=>{DATA.forEach(s=>{s.items=s.items.filter(i=>!i.x);Object.keys(XI).forEach(k=>{const d=XI[k];if(d.sheet===s.id)s.items.push({id:k,x:1,t:d.t,c:d.c,n:d.n,b:d.b,m:d.m,s:d.s,r:d.r,d:d.c,_h:''})});s.items.forEach(i=>{i.c=ov[i.id]??i.d})});render()};
+const applyOv=()=>{DATA.forEach(s=>{s.items=s.items.filter(i=>!i.x);Object.keys(XI).forEach(k=>{const d=XI[k];if(d.sheet===s.id)s.items.push({id:k,x:1,t:d.t,c:d.c,n:d.n,b:d.b,m:d.m,s:d.s,r:d.r,d:d.c,_h:''})});s.items.forEach(i=>{i.c=ov[i.id]??i.d;if(!i.x){i._o=i._o||{n:i.n,b:i.b,m:i.m,s:i.s,r:i.r};Object.assign(i,i._o,ie[i.id]||{});i._h=[i.n,i.b,...i.m,...i.s,...i.r].join('\n')}})});render()};
+const ie={};;
 async function setCat(id,val){const it=findItem(id);if(!it||!db||!val||val===it.c)return;
-  try{if(val===it.d){await db.doc('overrides/'+id).delete();delete ov[id]}else{await db.doc('overrides/'+id).set({cat:val});ov[id]=val}applyOv();say('已儲存')}
+  try{if(val===it.d){await D('overrides/'+id);delete ov[id]}else{await W('overrides/'+id,{cat:val});ov[id]=val}applyOv();say('已儲存')}
   catch(e){say('儲存失敗，請確認你有編輯權限。');render()}}
 function askCat(id){
   $('m-form').innerHTML='<h2>新增分類</h2><input id="m-name" type="text" maxlength="20" placeholder="分類名稱" autocomplete="off"><div class="btns"><button class="btn go" type="submit">套用到此項目</button><button class="btn" type="button" id="m-x">取消</button></div>';
@@ -342,7 +343,7 @@ function openCert(id){const c=CERTS.find(x=>x.id===id);if(!c||!db)return;
     else if(t.id==='t-col'&&okC(t.value)){selC=t.value;drawT()}};
   $('t-new').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addT()}};
   $('e-x').onclick=closeModal;
-  if(certOv[id])$('e-r').onclick=async()=>{try{await db.doc('certs/'+id).delete();delete certOv[id];mkCerts();closeModal();say('已還原預設');render()}catch(x){err('還原失敗，請確認你有編輯權限。')}};
+  if(certOv[id])$('e-r').onclick=async()=>{try{await D('certs/'+id,'還原證書預設');delete certOv[id];mkCerts();closeModal();say('已還原預設');render()}catch(x){err('還原失敗，請確認你有編輯權限。')}};
   $('m-form').onsubmit=async e=>{e.preventDefault();
     const v=i=>$(i).value.trim(),bad=['e-w0','e-w1','e-h0','e-h1'].some(i=>v(i)===''||isNaN(+v(i)));
     if(bad)return err('請填入完整的寬、高數值。');
@@ -350,7 +351,7 @@ function openCert(id){const c=CERTS.find(x=>x.id===id);if(!c||!db)return;
     if(w[0]>w[1]||h[0]>h[1])return err('下限不可大於上限。');
     const pend=$('t-new').value.trim();if(pend)T.push({t:pend.slice(0,12),c:selC});
     const o={k:v('e-k'),n:v('e-n')||c.n,g:c.g,tags:T,tag:v('e-tag'),th:v('e-th'),w,h,note:$('e-note').value.split('\n').map(x=>x.trim()).filter(Boolean)};
-    try{await db.doc('certs/'+id).set(o);certOv[id]=o;mkCerts();closeModal();say('已儲存');render()}catch(x){err('儲存失敗，請確認你有編輯權限。')}};
+    try{await W('certs/'+id,o);certOv[id]=o;mkCerts();closeModal();say('已儲存');render()}catch(x){err('儲存失敗，請確認你有編輯權限。')}};
   $('modal').hidden=false;$('e-n').focus()}
 $('list').addEventListener('change',e=>{const s=e.target.closest('select.ce');if(!s)return;const it=findItem(s.dataset.id);
   if(s.value==='__new__'){s.value=it.c;askCat(it.id)}else setCat(it.id,s.value)});
@@ -390,7 +391,7 @@ function openBackup(){
   <p class="bk-msg">可匯出全部資料（證書、新增的五金、分類修改、備註），或貼上 JSON 匯入。匯入會覆蓋相同編號的資料。</p>
   <textarea id="j-t" style="min-height:10rem" spellcheck="false" placeholder="按「產生備份」，或貼上要匯入的 JSON"></textarea>
   <div class="btns" style="flex-wrap:wrap"><button type="button" class="btn" id="j-exp">產生備份</button><button type="button" class="btn" id="j-copy">複製</button><button type="button" class="btn" id="j-dl">下載 .json</button><button type="button" class="btn go" id="j-imp">匯入</button></div>
-  <p class="bk-msg" id="b-msg" aria-live="polite"></p>
+  <h3>Excel／CSV 匯入匯出（批次編輯）</h3><p class="bk-msg">先「匯出 CSV」，用 Excel 修改後再匯入。有編號(id)的列會更新該筆；id 留空則新增；多個型號／尺寸／備註在同一格內換行。</p><div class="btns" style="flex-wrap:wrap"><button type="button" class="btn" id="c-exp">匯出 CSV</button><label class="btn go" style="cursor:pointer">匯入 CSV<input type="file" id="c-f" accept=".csv,text/csv" hidden></label></div><p class="bk-msg" id="b-msg" aria-live="polite"></p>
   <div class="btns"><button type="button" class="btn" id="m-x">關閉</button></div>`;
   const msg=t=>{$('b-msg').textContent=t},v=i=>$(i).value;
   const gen=()=>{const t=JSON.stringify(exportObj(),null,2);$('j-t').value=t;return t};
@@ -400,15 +401,16 @@ function openBackup(){
       if(!db)return msg('尚未連線，無法儲存。');
       const d=cleanItem({sheet:v('b-s'),t:v('b-t'),c:v('b-cn').trim()||v('b-c'),n:v('b-n'),b:v('b-b'),m:lines(v('b-m')),s:lines(v('b-z')),r:lines(v('b-r'))});
       if(!d)return msg('請至少填入名稱。');
-      try{await db.doc('items/'+newId()).set(d);msg('已新增到 '+d.sheet+' 頁。');['b-n','b-b','b-m','b-z','b-r','b-cn'].forEach(i=>$(i).value='')}catch(x){msg('儲存失敗，請確認你有編輯權限。')}
-    }else if(b.id==='j-exp'){gen();msg('已產生備份，可複製或下載。')}
+      try{await W('items/'+newId(),d,'新增五金');msg('已新增到 '+d.sheet+' 頁。');['b-n','b-b','b-m','b-z','b-r','b-cn'].forEach(i=>$(i).value='')}catch(x){msg('儲存失敗，請確認你有編輯權限。')}
+    }else if(b.id==='c-exp'){csvOut();msg('已下載 CSV。')}
+    else if(b.id==='j-exp'){gen();msg('已產生備份，可複製或下載。')}
     else if(b.id==='j-copy'){const t=v('j-t')||gen();try{await navigator.clipboard.writeText(t);msg('已複製。')}catch(x){$('j-t').select();msg('請手動複製（已選取全文）。')}}
     else if(b.id==='j-dl'){const t=v('j-t')||gen();try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'application/json'}));a.download='立宸五金備份_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);msg('已下載。')}catch(x){msg('無法下載，請按「複製」。')}}
     else if(b.id==='j-imp'){
       let o;try{o=JSON.parse(v('j-t'))}catch(x){return msg('JSON 格式錯誤，無法解析。')}
       if(!o||typeof o!=='object')return msg('JSON 內容不正確。');
       if(!db)return msg('尚未連線，無法儲存。');
-      let ok=0,bad=0;const put=async(p,val)=>{try{await db.doc(p).set(val);ok++}catch(x){bad++}};
+      let ok=0,bad=0;const put=async(p,val)=>{try{await W(p,val,'JSON匯入');ok++}catch(x){bad++}};
       b.disabled=true;msg('匯入中…');
       for(const [k,c0] of Object.entries(o.certs||{})){const c=CERTS0.some(x=>x.id===k)?cleanCert(c0):null;if(c)await put('certs/'+k,c);else bad++}
       for(const it of (Array.isArray(o.items)?o.items:[])){const c=cleanItem(it);if(c)await put('items/'+(it&&idOk(it.id)?it.id:newId()),c);else bad++}
@@ -416,29 +418,92 @@ function openBackup(){
       for(const [k,t] of Object.entries(o.notes||{})){if(typeof t==='string'&&['F22','F28'].includes(k))await put('notes/'+k,{text:t.trim().slice(0,80)});else bad++}
       for(const [k,t] of Object.entries(o.overrides||{})){if(idOk(k)&&typeof t==='string'&&t.trim())await put('overrides/'+k,{cat:t.trim().slice(0,20)});else bad++}
       b.disabled=false;msg(`匯入完成：成功 ${ok} 筆，略過／失敗 ${bad} 筆。`)}};
+  $('c-f').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f){msg('匯入中…');msg(await csvIn(await f.text()))}};
   $('modal').hidden=false}
 $('bk').onclick=()=>{if(admin)openBackup()};
 $('list').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;const id=b.dataset.del,it=findItem(id);if(!it)return;
   $('m-form').onclick=null;$('m-form').onchange=null;
   $('m-form').innerHTML=`<h2>刪除五金</h2><p>確定刪除「${esc(it.n)}」？</p><div class="btns"><button class="btn go" type="submit">確定刪除</button><button class="btn" type="button" id="m-x">取消</button></div>`;
-  $('m-form').onsubmit=async ev=>{ev.preventDefault();closeModal();try{await db.doc('items/'+id).delete();say('已刪除')}catch(x){say('刪除失敗，請確認你有編輯權限。')}};
+  $('m-form').onsubmit=async ev=>{ev.preventDefault();closeModal();try{await D('items/'+id,'刪除五金');say('已刪除')}catch(x){say('刪除失敗，請確認你有編輯權限。')}};
   $('m-x').onclick=closeModal;$('modal').hidden=false});
-let auth=null;
+let auth=null,isSuper=false,justLogin=false;
 const FB_OK=typeof firebase!=='undefined'&&!!FIREBASE_CONFIG.apiKey&&!/^YOUR/.test(FIREBASE_CONFIG.apiKey);
-function setAdmin(on){admin=on;$('bk').hidden=!on;$('adm').textContent=on?'登出':'登入';say('');render()}
-$('adm').onclick=()=>{
-  if(admin){if(auth)auth.signOut();else setAdmin(false);return}
+function setAdmin(on){admin=on;$('bk').hidden=!on;$('lg').hidden=!on;$('adm').textContent=on?'登出':'登入';say('');render()}
+$('adm').onclick=async()=>{
+  if(admin){if(auth){await lg({k:'login',act:'登出'});auth.signOut()}else setAdmin(false);return}
   if(!auth){say('尚未設定 Firebase，無法登入。請先在檔案開頭填入 FIREBASE_CONFIG。');return}
   $('m-form').onclick=null;$('m-form').onchange=null;
-  $('m-form').innerHTML='<h2>登入</h2><div class="field"><label for="m-pw">密碼（有大小寫之分）</label><input id="m-pw" type="password" autocomplete="current-password"></div><p class="hint warn" id="m-err" hidden>登入失敗，請確認密碼。</p><div class="btns"><button class="btn go" type="submit">登入</button><button class="btn" type="button" id="m-x">取消</button></div>';
-  $('m-form').onsubmit=async e=>{e.preventDefault();const pw=$('m-pw').value;
-    try{await auth.signInWithEmailAndPassword(ADMIN_EMAIL,pw);closeModal()}
-    catch(x){$('m-err').hidden=false;$('m-pw').value='';$('m-pw').focus()}};
+  $('m-form').innerHTML='<h2>管理員登入</h2><div class="field"><label for="m-em">帳號（電子郵件）</label><input id="m-em" type="email" autocomplete="username" value="'+ADMIN_EMAIL+'"></div><div class="field"><label for="m-pw">密碼（有大小寫之分）</label><input id="m-pw" type="password" autocomplete="current-password"></div><p class="hint warn" id="m-err" hidden>登入失敗，請確認帳號與密碼。</p><div class="btns"><button class="btn go" type="submit">登入</button><button class="btn" type="button" id="m-x">取消</button></div>';
+  $('m-form').onsubmit=async e=>{e.preventDefault();const pw=$('m-pw').value;justLogin=true;
+    try{await auth.signInWithEmailAndPassword($('m-em').value.trim().toLowerCase(),pw);closeModal()}
+    catch(x){justLogin=false;$('m-err').hidden=false;$('m-pw').value='';$('m-pw').focus()}};
   $('m-x').onclick=closeModal;$('modal').hidden=false;$('m-pw').focus()};
+/* ===== 管理紀錄／登入紀錄／帳號管理／項目編輯／CSV ===== */
+const me=()=>auth&&auth.currentUser?auth.currentUser.email:'';
+async function lg(o){try{await db.collection('logs').add({ts:firebase.firestore.FieldValue.serverTimestamp(),u:me(),...o})}catch(e){}}
+async function W(p,v,act){const r=db.doc(p),o=await r.get();await r.set(v);lg({k:'edit',act:act||'修改',p,b:o.exists?JSON.stringify(o.data()):null,a:JSON.stringify(v)})}
+async function D(p,act){const r=db.doc(p),o=await r.get();await r.delete();if(o.exists)lg({k:'edit',act:act||'刪除',p,b:JSON.stringify(o.data()),a:null})}
+function openEdit(id){const it=findItem(id);if(!it)return;const ta=(i,l,a)=>`<div class="field"><label for="${i}">${l}</label><textarea id="${i}">${esc(a.join('\n'))}</textarea></div>`;
+  $('m-form').onclick=null;$('m-form').onchange=null;
+  $('m-form').innerHTML=`<h2>編輯五金</h2><div class="g2"><div class="field"><label for="i-n">名稱</label><input id="i-n" maxlength="60" value="${esc(it.n)}"></div><div class="field"><label for="i-b">廠牌</label><input id="i-b" maxlength="40" value="${esc(it.b)}"></div></div>`+ta('i-m','型號（每行一個）',it.m)+ta('i-z','尺寸限制（每行一則）',it.s)+ta('i-r','備註（每行一則）',it.r)+`<p class="hint warn" id="i-err" hidden></p><div class="btns"><button class="btn go" type="submit">儲存</button><button class="btn" type="button" id="m-x">取消</button>${ie[id]?'<button class="btn" type="button" id="i-rs">還原預設</button>':''}</div>`;
+  $('m-x').onclick=closeModal;
+  if(ie[id])$('i-rs').onclick=async()=>{try{await D('itemEdits/'+id,'還原五金預設');closeModal();say('已還原預設')}catch(x){say('失敗，請確認權限。')}};
+  $('m-form').onsubmit=async e=>{e.preventDefault();const v=i=>$(i).value;
+    const d={n:v('i-n').trim().slice(0,60),b:v('i-b').trim().slice(0,40),m:lines(v('i-m')),s:lines(v('i-z')),r:lines(v('i-r'))};
+    if(!d.n){$('i-err').textContent='請填入名稱。';$('i-err').hidden=false;return}
+    try{if(it.x)await W('items/'+id,{...XI[id],...d});else await W('itemEdits/'+id,d);closeModal();say('已儲存')}catch(x){say('儲存失敗，請確認你有編輯權限。')}};
+  $('modal').hidden=false;$('i-n').focus()}
+$('list').addEventListener('click',e=>{const b=e.target.closest('[data-ei]');if(b)openEdit(b.dataset.ei)});
+const csvE=v=>{v=String(v??'');return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+function csvOut(){const H=['id','sheet','t','c','n','b','m','s','r'],R=[H.join(',')];
+  DATA.forEach(S=>S.items.forEach(i=>R.push([i.id,S.id,i.t,i.c,i.n,i.b,i.m.join('\n'),i.s.join('\n'),i.r.join('\n')].map(csvE).join(','))));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+R.join('\r\n')],{type:'text/csv'}));a.download='立宸五金_'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function csvParse(t){const R=[];let r=[],c='',q=false;t=t.replace(/^\ufeff/,'');
+  for(let k=0;k<t.length;k++){const x=t[k];
+    if(q){if(x=='"'){if(t[k+1]=='"'){c+='"';k++}else q=false}else c+=x}
+    else if(x=='"')q=true;else if(x==','){r.push(c);c=''}else if(x=='\n'||x=='\r'){if(x=='\r'&&t[k+1]=='\n')k++;r.push(c);c='';if(r.some(z=>z!==''))R.push(r);r=[]}else c+=x}
+  r.push(c);if(r.some(z=>z!==''))R.push(r);return R}
+async function csvIn(t){const R=csvParse(t),H=R.shift()||[];const ix=k=>H.indexOf(k);if(ix('n')<0||ix('id')<0)return'CSV 格式錯誤：需有 id、n 等欄位標題。';
+  let ok=0,same=0,bad=0;const g=(r,k)=>ix(k)<0?'':(r[ix(k)]||'');
+  for(const r of R){try{const id=g(r,'id').trim(),d={sheet:g(r,'sheet').trim(),t:g(r,'t'),c:g(r,'c'),n:g(r,'n'),b:g(r,'b'),m:lines(g(r,'m')),s:lines(g(r,'s')),r:lines(g(r,'r'))},it=id?findItem(id):null;
+    if(it&&!it.x){const e={n:d.n.trim().slice(0,60),b:d.b.trim().slice(0,40),m:d.m,s:d.s,r:d.r};if(!e.n){bad++;continue}
+      const ch=JSON.stringify(e)!==JSON.stringify({n:it.n,b:it.b,m:it.m,s:it.s,r:it.r}),cc=d.c.trim()&&d.c.trim()!==it.c;
+      if(ch)await W('itemEdits/'+id,e,'CSV匯入');
+      if(cc){if(d.c.trim()===it.d)await D('overrides/'+id,'CSV匯入');else await W('overrides/'+id,{cat:d.c.trim().slice(0,20)},'CSV匯入')}
+      ch||cc?ok++:same++}
+    else{const c=cleanItem(d);if(!c){bad++;continue}
+      if(it&&it.x){if(JSON.stringify(XI[id])===JSON.stringify(c)){same++;continue}await W('items/'+id,c,'CSV匯入')}else await W('items/'+newId(),c,'CSV新增');ok++}}catch(x){bad++}}
+  return`CSV 匯入完成：更新／新增 ${ok} 筆，未變動 ${same} 筆，略過／失敗 ${bad} 筆。`}
+let LK='edit';
+async function openLog(k){LK=k||LK;$('m-form').onsubmit=e=>e.preventDefault();$('m-form').onchange=null;
+  const tb=[['edit','管理紀錄'],['login','登入紀錄'],...(isSuper?[['acc','帳號管理']]:[])];
+  $('m-form').innerHTML=`<h2>紀錄</h2><div class="btns" style="flex-wrap:wrap">${tb.map(([a,l])=>`<button type="button" class="btn${a===LK?' go':''}" data-tb="${a}">${l}</button>`).join('')}<button type="button" class="btn" id="m-x">關閉</button></div><div id="lg-b" class="bk-msg">讀取中…</div>`;
+  $('m-x').onclick=closeModal;$('modal').hidden=false;const B=$('lg-b');
+  $('m-form').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.tb)openLog(b.dataset.tb);
+    else if(b.dataset.rv){if(!confirm('確定還原到這筆修改前的狀態？'))return;try{const x=(await db.collection('logs').doc(b.dataset.rv).get()).data();if(x.b)await W(x.p,JSON.parse(x.b),'還原');else await D(x.p,'還原');say('已還原');openLog('edit')}catch(z){B.textContent='還原失敗，請確認權限。'}}
+    else if(b.dataset.ds){if(!confirm('移除此管理員帳號的登入權限？'))return;try{await D('staff/'+b.dataset.ds,'移除管理員帳號');openLog('acc')}catch(z){B.textContent='移除失敗。'}}
+    else if(b.id==='a-add'){const em=$('a-e').value.trim().toLowerCase(),pw=$('a-p').value,am=$('a-m');if(!em||pw.length<6){am.textContent='請輸入電子郵件，密碼至少 6 碼。';return}
+      try{const sec=firebase.apps.find(a=>a.name==='sec')||firebase.initializeApp(FIREBASE_CONFIG,'sec');
+        try{await sec.auth().createUserWithEmailAndPassword(em,pw);await sec.auth().signOut()}catch(z){if(z.code!=='auth/email-already-in-use')throw z}
+        await W('staff/'+em,{by:me(),ts:Date.now()},'建立管理員帳號');openLog('acc')}
+      catch(z){am.textContent='建立失敗：'+(z.code||z.message)}}};
+  try{if(LK==='acc'){const q=await db.collection('staff').get();
+      B.innerHTML='<p>只有由管理員建立的帳號才能登入。（若該電子郵件已有 Firebase 帳號，只會開通權限，密碼不變。）</p>'+q.docs.map(d=>`<div style="padding:.4rem 0;border-bottom:1px solid var(--ln)">${esc(d.id)} <button type="button" class="lnk" data-ds="${esc(d.id)}">移除</button></div>`).join('')+'<div class="field"><label for="a-e">新管理員電子郵件</label><input id="a-e" type="email"></div><div class="field"><label for="a-p">初始密碼（至少 6 碼）</label><input id="a-p" type="text"></div><button type="button" class="btn go" id="a-add">建立帳號</button><p id="a-m" class="hint warn"></p>';return}
+    const q=await db.collection('logs').orderBy('ts','desc').limit(200).get(),L=q.docs.filter(d=>d.data().k===LK);
+    B.innerHTML=L.length?L.map(d=>{const x=d.data(),t=x.ts?x.ts.toDate().toLocaleString('zh-TW',{hour12:false}):'',n=(()=>{try{const o=JSON.parse(x.a||x.b);return o.n||o.text||o.cat||''}catch(z){return''}})();
+      return`<div style="padding:.5rem 0;border-bottom:1px solid var(--ln)"><b>${esc(x.act||'')}</b> ${esc(n)}<br>${esc(t)}　${esc(x.u||'')}${x.p?`<br>${esc(x.p)}${x.k==='edit'?` <button type="button" class="lnk" data-rv="${d.id}">還原</button>`:''}`:''}</div>`}).join(''):'目前沒有紀錄。'}
+  catch(z){B.textContent='讀取失敗，請確認 Firestore 規則已更新。'}}
+$('lg').onclick=()=>{if(admin)openLog('edit')};
 (async()=>{
   if(!FB_OK){say('尚未設定 Firebase：目前為唯讀，只顯示內建資料。');return}
   try{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();auth=firebase.auth();
-    auth.onAuthStateChanged(u=>setAdmin(!!u&&u.email===ADMIN_EMAIL))}catch(e){db=null;return}
+    auth.onAuthStateChanged(async u=>{if(!u){isSuper=false;setAdmin(false);return}
+      const em=(u.email||'').toLowerCase();let ok=isSuper=em===ADMIN_EMAIL.toLowerCase();
+      if(!ok){try{ok=(await db.doc('staff/'+em).get()).exists}catch(e){}}
+      if(!ok){justLogin=false;await auth.signOut();setTimeout(()=>say('此帳號不是管理員帳號，無法登入。'),300);return}
+      setAdmin(true);if(justLogin){justLogin=false;lg({k:'login',act:'登入'})}})}catch(e){db=null;return}
+  db.collection('itemEdits').onSnapshot(snap=>{Object.keys(ie).forEach(k=>delete ie[k]);snap.docs.forEach(d=>{const c=cleanItem({sheet:DATA[0].id,...d.data()});if(c)ie[d.id]={n:c.n,b:c.b,m:c.m,s:c.s,r:c.r}});applyOv()},()=>{});
   db.collection('overrides').onSnapshot(snap=>{ov={};snap.docs.forEach(d=>{const c=d.data()?.cat;if(typeof c==='string'&&c)ov[d.id]=c});applyOv()},()=>{});
   db.collection('notes').onSnapshot(snap=>{nv={};snap.docs.forEach(d=>{const t=d.data()?.text;if(typeof t==='string')nv[d.id]=t});render()},()=>{});
   db.collection('certs').onSnapshot(snap=>{certOv={};snap.docs.forEach(d=>{const x=d.data();if(x&&Array.isArray(x.w)&&Array.isArray(x.h)&&Array.isArray(x.note)){if(Array.isArray(x.tags))x.tags=x.tags.filter(t=>t&&typeof t.t==='string'&&okC(t.c));else delete x.tags;certOv[d.id]=x}});mkCerts();render()},()=>{});
