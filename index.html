@@ -153,10 +153,11 @@ textarea{width:100%;font:inherit;font-size:max(16px,1rem);padding:.55rem .8rem;b
 #tabs{padding:.5rem 0 .6rem}
 .cd a.vb{display:inline-flex;align-items:center;justify-content:center;width:100%;margin-top:.6rem;padding:.35rem 1rem;min-height:2.8rem;font-size:20px;font-weight:600;text-decoration:none;border-radius:.6rem}
 .tb{display:flex;flex-wrap:wrap;gap:.3rem;justify-content:flex-end}#pg .btn{min-height:2.4rem}
+.um-i{display:flex;align-items:center;gap:.65rem;width:100%;padding:.65rem .75rem;background:none;border:0;border-radius:.5rem;color:var(--fg);font:inherit;font-size:.95rem;cursor:pointer;text-align:left}.um-i:hover,.um-i:focus-visible{background:var(--bg)}#um{display:inline-flex;align-items:center;justify-content:center}
 </style></head><body>
 <header id="hd"><div class="in">
   <div class="top"><h1>立宸實業有限公司<span class="h1s">五金表尺寸、確認</span></h1>
-    <span class="tb"><button class="fb adm" id="ac" hidden>帳號</button><button class="fb adm" id="ad" hidden>新增</button><button class="fb adm" id="bk" hidden>備份區</button><button class="fb adm" id="lg" hidden>紀錄</button><button class="fb adm" id="pw" hidden>改密碼</button><button class="fb adm" id="adm">登出</button></span></div>
+    <span class="tb"><button class="fb" id="um" hidden aria-label="使用者選單" aria-haspopup="true"></button><span id="old" hidden><button class="fb adm" id="ac" hidden>帳號</button><button class="fb adm" id="ad" hidden>新增</button><button class="fb adm" id="bk" hidden>備份區</button><button class="fb adm" id="lg" hidden>紀錄</button><button class="fb adm" id="pw" hidden>改密碼</button><button class="fb adm" id="adm">登出</button></span></span></div>
   <nav id="tabs" role="tablist" aria-label="報告書"></nav>
 </div></header>
 <main class="in">
@@ -413,7 +414,7 @@ $('list').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if
   $('m-form').innerHTML=`<h2>刪除五金</h2><p>確定刪除「${esc(it.n)}」？</p><div class="btns"><button class="btn go" type="submit">確定刪除</button><button class="btn" type="button" id="m-x">取消</button></div>`;
   $('m-form').onsubmit=async ev=>{ev.preventDefault();closeModal();try{await D('items/'+id,'刪除五金');say('已刪除')}catch(x){say('刪除失敗，請確認你有編輯權限。')}};
   $('m-x').onclick=closeModal;$('modal').hidden=false});
-let auth=null,isSuper=false,justLogin=false,startL=()=>{},L0=0;
+let auth=null,curRole='',isSuper=false,justLogin=false,startL=()=>{},L0=0;
 const FB_OK=typeof firebase!=='undefined'&&!!FIREBASE_CONFIG.apiKey&&!/^YOUR/.test(FIREBASE_CONFIG.apiKey);
 function setAdmin(on){admin=on;$('bk').hidden=!on;$('lg').hidden=!on;$('ad').hidden=!on;$('ac').hidden=!(on&&isSuper);$('adm').textContent='登出';say('');render()}
 $('adm').onclick=async()=>{if(auth){await lg({k:'login',act:'登出'});try{await auth.signOut()}catch(e){}}location.reload()};
@@ -471,9 +472,9 @@ async function rowsIn(R){const H=(R.shift()||[]).map(x=>HM[String(x).trim()]||St
       if(it&&it.x){if(JSON.stringify(XI[id])===JSON.stringify(c)){same++;continue}await W('items/'+id,c,'CSV匯入')}else await W('items/'+newId(),c,'CSV新增');ok++}}catch(x){bad++}}
   return`CSV 匯入完成：更新／新增 ${ok} 筆，未變動 ${same} 筆，略過／失敗 ${bad} 筆。`}
 let LK='edit';
-async function openLog(k){LK=k||LK;$('m-form').onsubmit=e=>e.preventDefault();$('m-form').onchange=null;
+async function openLog(k){LK=k||LK;const NM={},who=u=>NM[u]?NM[u]+'（'+accName(u)+'）':accName(u||'');$('m-form').onsubmit=e=>e.preventDefault();$('m-form').onchange=null;
   const tb=[['edit','管理紀錄'],['login','登入紀錄']];
-  $('m-form').innerHTML=`<h2>紀錄</h2><div class="btns" style="flex-wrap:wrap">${tb.map(([a,l])=>`<button type="button" class="btn${a===LK?' go':''}" data-tb="${a}">${l}</button>`).join('')}<button type="button" class="btn" id="m-x">關閉</button></div><div id="lg-b" class="bk-msg">讀取中…</div>`;
+  $('m-form').innerHTML=`<h2>管理／登入紀錄</h2><div class="btns" style="flex-wrap:wrap">${tb.map(([a,l])=>`<button type="button" class="btn${a===LK?' go':''}" data-tb="${a}">${l}</button>`).join('')}<button type="button" class="btn" id="m-x">關閉</button></div><div id="lg-b" class="bk-msg">讀取中…</div>`;
   $('m-x').onclick=closeModal;$('modal').hidden=false;const B=$('lg-b');
   $('m-form').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
     if(b.dataset.tb)openLog(b.dataset.tb);
@@ -484,11 +485,12 @@ async function openLog(k){LK=k||LK;$('m-form').onsubmit=e=>e.preventDefault();$(
         try{await sec.auth().createUserWithEmailAndPassword(em,pw);await sec.auth().signOut()}catch(z){if(z.code!=='auth/email-already-in-use')throw z}
         await W('staff/'+em,{by:me(),ts:Date.now(),role:$('a-r').value},'建立管理員帳號');openLog('acc')}
       catch(z){am.textContent='建立失敗：'+(z.code||z.message)}}};
-  try{if(LK==='acc'){const q=await db.collection('staff').get();
+  try{try{(await db.collection('staffInfo').get()).docs.forEach(d=>NM[d.id]=d.data().name)}catch(e){}
+    if(LK==='acc'){const q=await db.collection('staff').get();
       B.innerHTML='<p>只有由管理員建立的帳號才能登入。（若該電子郵件已有 Firebase 帳號，只會開通權限，密碼不變。）</p>'+q.docs.map(d=>`<div style="padding:.4rem 0;border-bottom:1px solid var(--ln)">${esc(d.id)}（${d.data().role==='member'?'會員':'管理員'}） <button type="button" class="lnk" data-ds="${esc(d.id)}">移除</button></div>`).join('')+'<div class="field"><label for="a-e">新管理員電子郵件</label><input id="a-e" type="email"></div><div class="field"><label for="a-p">初始密碼（至少 6 碼）</label><input id="a-p" type="text"></div><div class="field"><label for="a-r">帳號類型</label><select id="a-r"><option value="member">會員帳號（僅可查看）</option><option value="admin">管理員帳號（可編輯）</option></select></div><button type="button" class="btn go" id="a-add">建立帳號</button><p id="a-m" class="hint warn"></p>';return}
     const q=await db.collection('logs').orderBy('ts','desc').limit(200).get(),L=q.docs.filter(d=>d.data().k===LK);
     B.innerHTML=L.length?L.map(d=>{const x=d.data(),t=x.ts?x.ts.toDate().toLocaleString('zh-TW',{hour12:false}):'',n=(()=>{try{const o=JSON.parse(x.a||x.b);return o.n||o.text||o.cat||''}catch(z){return''}})();
-      return`<div style="padding:.5rem 0;border-bottom:1px solid var(--ln)"><b>${esc(x.act||'')}</b> ${esc(n)}<br>${esc(t)}　${esc(x.u||'')}${x.p?`<br>${esc(x.p)}${x.k==='edit'?` <button type="button" class="lnk" data-rv="${d.id}">還原</button>`:''}`:''}</div>`}).join(''):'目前沒有紀錄。'}
+      return`<div style="padding:.5rem 0;border-bottom:1px solid var(--ln)"><b>${esc(x.act||'')}</b> ${esc(n)}<br>${esc(t)}　${esc(who(x.u))}${x.p?`<br>${esc(x.p)}${x.k==='edit'?` <button type="button" class="lnk" data-rv="${d.id}">還原</button>`:''}`:''}</div>`}).join(''):'目前沒有紀錄。'}
   catch(z){B.textContent='讀取失敗，請確認 Firestore 規則已更新。'}}
 $('lg').onclick=()=>{if(admin)openLog('edit')};
 /* ===== 帳號／頁面／改密碼 ===== */
@@ -509,22 +511,24 @@ $('pw').onclick=()=>openPw(false);
 const fld=(i,l,x='')=>`<div class="field"><label for="${i}">${l}</label><input id="${i}" ${x}></div>`;
 async function openAccounts(){openPage('帳號管理','<div class="bk-msg">讀取中…</div>');
   const B=$('pg-b'),draw=async()=>{let q;try{q=await db.collection('staff').get()}catch(e){B.innerHTML+='<p class="hint warn">讀取失敗，請確認 Firestore 規則。</p>';return}
-    const L=q.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.ts||0)-(b.ts||0));
+    const NM={};try{(await db.collection('staffInfo').get()).docs.forEach(d=>NM[d.id]=d.data().name)}catch(e){}
+    const L=q.docs.map(d=>({id:d.id,name:NM[d.id]||'',...d.data()})).sort((a,b)=>(a.ts||0)-(b.ts||0));
     $('pg-b').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">帳號管理</h2><button type="button" class="btn" id="pg-x">返回</button></div>
-    <h3>建立帳號</h3><div class="field"><label for="a-r">1. 帳號類型</label><select id="a-r"><option value="member">會員帳號（僅可查看）</option><option value="admin">管理員帳號（可編輯）</option></select></div>${fld('a-e','2. 帳號','autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="英文、數字，2～30 字"')}<button type="button" class="btn go" id="a-add">3. 建立帳號（預設密碼 ${DEFPW}）</button><p id="a-m" class="hint warn" aria-live="polite"></p>
+    <h3>建立帳號</h3><div class="field"><label for="a-r">1. 帳號類型</label><select id="a-r"><option value="member">會員帳號（僅可查看）</option><option value="admin">管理員帳號（可編輯）</option></select></div>${fld('a-e','2. 帳號','autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="英文、數字，2～30 字"')}${fld('a-nm','3. 會員名稱（僅管理者可見）','maxlength="20" autocomplete="off"')}<button type="button" class="btn go" id="a-add">4. 建立帳號（預設密碼 ${DEFPW}）</button><p id="a-m" class="hint warn" aria-live="polite"></p>
     <h3>帳號資訊（共 ${L.length} 個）</h3>${fld('a-q','搜尋帳號','placeholder="輸入帳號關鍵字"')}<div id="a-l"></div>`;
     $('pg-x').onclick=()=>{$('pg').hidden=true};
-    const paint=()=>{const k=$('a-q').value.trim().toLowerCase(),F=L.filter(x=>accName(x.id).includes(k));
-      $('a-l').innerHTML=F.length?F.map(x=>`<div style="padding:.55rem 0;border-bottom:1px solid var(--ln)"><b>${esc(accName(x.id))}</b>　${x.role==='member'?'會員帳號':'管理員帳號'}　<span class="meta">${x.pc===false?'尚未修改密碼':'已修改密碼'}</span><br><span class="meta">建立：${esc(accName(x.by||''))}　${x.ts?new Date(x.ts).toLocaleString('zh-TW',{hour12:false}):''}</span> <button type="button" class="lnk" data-ds="${esc(x.id)}">移除</button></div>`).join(''):'<p class="bk-msg">沒有符合的帳號。</p>'};
+    const paint=()=>{const k=$('a-q').value.trim().toLowerCase(),F=L.filter(x=>(accName(x.id)+(x.name||'')).toLowerCase().includes(k));
+      $('a-l').innerHTML=F.length?F.map(x=>`<div style="padding:.55rem 0;border-bottom:1px solid var(--ln)"><b>${esc(x.name||'（未命名）')}</b>（帳號：${esc(accName(x.id))}）　${x.role==='member'?'會員帳號':'管理員帳號'}　<span class="meta">${x.pc===false?'尚未修改密碼':'已修改密碼'}</span><br><span class="meta">建立：${esc(accName(x.by||''))}　${x.ts?new Date(x.ts).toLocaleString('zh-TW',{hour12:false}):''}</span> <button type="button" class="lnk" data-ds="${esc(x.id)}">移除</button> <button type="button" class="lnk" data-rn="${esc(x.id)}">改名稱</button></div>`).join(''):'<p class="bk-msg">沒有符合的帳號。</p>'};
     paint();$('a-q').oninput=paint;
     $('pg-b').onclick=async e=>{const b=e.target.closest('button');if(!b)return;const am=$('a-m');
-      if(b.dataset.ds){if(!confirm('移除「'+accName(b.dataset.ds)+'」的登入權限？'))return;try{await D('staff/'+b.dataset.ds,'移除帳號');draw()}catch(z){am.textContent='移除失敗。'}}
-      else if(b.id==='a-add'){const ac=$('a-e').value.trim().toLowerCase(),em=ac+DOM;
+      if(b.dataset.ds){if(!confirm('移除「'+accName(b.dataset.ds)+'」的登入權限？'))return;try{await D('staff/'+b.dataset.ds,'移除帳號');await D('staffInfo/'+b.dataset.ds,'移除會員名稱');draw()}catch(z){am.textContent='移除失敗。'}}
+      else if(b.dataset.rn){const x=L.find(y=>y.id===b.dataset.rn),n=prompt('會員名稱',x.name||'');if(n===null)return;const t=n.trim().slice(0,20);if(!t)return;try{await W('staffInfo/'+x.id,{name:t},'修改會員名稱');draw()}catch(z){am.textContent='修改失敗。'}}
+      else if(b.id==='a-add'){const nm=$('a-nm').value.trim().slice(0,20);if(!nm){am.textContent='請輸入會員名稱。';return}const ac=$('a-e').value.trim().toLowerCase(),em=ac+DOM;
         if(!/^[a-z0-9_.-]{2,30}$/.test(ac)){am.textContent='帳號請輸入 2～30 個英文、數字或 _ . -';return}
         b.disabled=true;am.textContent='建立中…';let used=false;
         try{const sec=firebase.apps.find(a=>a.name==='sec')||firebase.initializeApp(FIREBASE_CONFIG,'sec');
           try{await sec.auth().createUserWithEmailAndPassword(em,DEFPW);await sec.auth().signOut()}catch(z){if(z.code!=='auth/email-already-in-use')throw z;used=true}
-          await W('staff/'+em,{by:me(),ts:Date.now(),role:$('a-r').value,pc:used},'建立帳號');
+          await W('staff/'+em,{by:me(),ts:Date.now(),role:$('a-r').value,pc:used},'建立帳號');await W('staffInfo/'+em,{name:nm},'設定會員名稱');
           await draw();$('a-m').textContent=used?'此帳號先前建立過，已重新開通，密碼維持原本設定。':'已建立，預設密碼 '+DEFPW+'，首次登入會提示修改密碼。'}
         catch(z){b.disabled=false;am.textContent='建立失敗：'+(z.code||z.message)}}}};
   draw()}
@@ -555,15 +559,45 @@ function openAdd(){const sh=ORD.filter(id=>DATA.some(s=>s.id===id)),ta=(i,l)=>`<
       msg(await rowsIn(rows))}catch(x){msg('讀取失敗：'+(x.message||x))}};
   $('p-jf').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f){$('p-j').value=await f.text();jin()}}}
 $('ad').onclick=()=>{if(admin)openAdd()};
+/* ===== 使用者選單 ===== */
+const IC={user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+ id:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c0-1.5 1.5-2.5 3-2.5s3 1 3 2.5M15 10h3M15 14h3"/>',
+ key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
+ userplus:'<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M19 8v6M16 11h6"/>',
+ plus:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/>',
+ db:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+ log:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',
+ out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+ tag:'<path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.2"/>'};
+const ic=n=>`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none">${IC[n]}</svg>`;
+$('um').innerHTML=ic('user');
+const mn=document.createElement('div');mn.hidden=true;mn.setAttribute('role','menu');
+mn.style.cssText='position:fixed;right:.6rem;z-index:30;background:var(--sf);border:1px solid var(--ln);border-radius:.7rem;padding:.3rem;min-width:13.5rem;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(mn);
+const menuItems=()=>[['id','帳號資訊',openInfo],['key','修改密碼',()=>$('pw').click()],
+  ...(admin&&isSuper?[['userplus','建立帳號',()=>$('ac').click()]]:[]),
+  ...(admin?[['plus','新增五金明細',()=>$('ad').click()],['db','備份區',()=>$('bk').click()],['log','管理／登入紀錄',()=>$('lg').click()]]:[]),
+  ['out','登出',()=>$('adm').click()]];
+$('um').onclick=e=>{e.stopPropagation();if(!mn.hidden){mn.hidden=true;return}
+  const M=menuItems();mn.innerHTML=M.map((m,i)=>`<button type="button" role="menuitem" class="um-i" data-i="${i}">${ic(m[0])}<span>${m[1]}</span></button>`).join('');
+  mn.style.top=($('um').getBoundingClientRect().bottom+6)+'px';mn.hidden=false;
+  mn.onclick=ev=>{const b=ev.target.closest('[data-i]');if(!b)return;mn.hidden=true;M[+b.dataset.i][2]()}};
+document.addEventListener('click',e=>{if(!mn.hidden&&!e.target.closest('#um'))mn.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')mn.hidden=true});
+async function openInfo(){let nm='';if(admin&&!isSuper){try{const d=await db.doc('staffInfo/'+me().toLowerCase()).get();if(d.exists)nm=d.data().name||''}catch(e){}}
+  const row=(i,l,v)=>`<div style="display:flex;align-items:center;gap:.6rem;padding:.55rem 0;border-bottom:1px solid var(--ln)">${ic(i)}<span style="color:var(--mu)">${l}</span><b style="margin-left:auto;overflow-wrap:anywhere;text-align:right">${esc(v)}</b></div>`;
+  $('m-form').onclick=null;$('m-form').onchange=null;$('m-form').onsubmit=e=>e.preventDefault();
+  $('m-form').innerHTML=`<h2>帳號資訊</h2>${row('user','帳號',accName(me()))}${nm?row('id','名稱',nm):''}${row('tag','類型',isSuper?'超級管理員':curRole==='admin'?'管理員帳號':'會員帳號')}<div class="btns"><button class="btn go" type="button" id="i-pw">${ic('key')} 修改密碼</button><button class="btn" type="button" id="m-x">關閉</button></div>`;
+  $('m-x').onclick=closeModal;$('i-pw').onclick=()=>openPw(false);$('modal').hidden=false}
+
 
 (async()=>{
   if(!FB_OK){$('gate').style.display='none';say('尚未設定 Firebase：目前為唯讀，只顯示內建資料。');return}
   try{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();auth=firebase.auth();
-    auth.onAuthStateChanged(async u=>{if(!u){isSuper=false;$('pw').hidden=true;$('gate').style.display='flex';setAdmin(false);return}
+    auth.onAuthStateChanged(async u=>{if(!u){isSuper=false;$('pw').hidden=$('um').hidden=true;$('gate').style.display='flex';setAdmin(false);return}
       const em=(u.email||'').toLowerCase(),sup=em===ADMIN_EMAIL.toLowerCase();let role=sup?'admin':null,first=false;
       if(!role){try{const d=await db.doc('staff/'+em).get();if(d.exists){role=d.data().role||'admin';first=d.data().pc===false}}catch(e){}}
       if(!role){justLogin=false;await auth.signOut();setTimeout(()=>{const er=$('g-err');er.textContent='此帳號尚未開通，請聯絡管理員。';er.hidden=false},300);return}
-      isSuper=sup;$('gate').style.display='none';$('pw').hidden=false;setAdmin(role==='admin');
+      isSuper=sup;curRole=role;$('gate').style.display='none';$('pw').hidden=$('um').hidden=false;setAdmin(role==='admin');
       if(justLogin){justLogin=false;lg({k:'login',act:'登入',r:role})}
       if(await loadBase())startL();if(first)openPw(true)})}catch(e){db=null;return}
   startL=()=>{if(L0)return;L0=1;
