@@ -152,10 +152,11 @@ textarea{width:100%;font:inherit;font-size:max(16px,1rem);padding:.55rem .8rem;b
 #tabs button[aria-selected=true]{background:var(--ac);color:var(--acf);border-color:var(--ac)}
 #tabs{padding:.5rem 0 .6rem}
 .cd a.vb{display:inline-flex;align-items:center;justify-content:center;width:100%;margin-top:.6rem;padding:.35rem 1rem;min-height:2.8rem;font-size:20px;font-weight:600;text-decoration:none;border-radius:.6rem}
+.tb{display:flex;flex-wrap:wrap;gap:.3rem;justify-content:flex-end}#pg .btn{min-height:2.4rem}
 </style></head><body>
 <header id="hd"><div class="in">
   <div class="top"><h1>立宸實業有限公司<span class="h1s">五金表尺寸、確認</span></h1>
-    <span class="tb"><button class="fb adm" id="bk" hidden>備份區</button><button class="fb adm" id="lg" hidden>紀錄</button><button class="fb adm" id="adm">登入</button></span></div>
+    <span class="tb"><button class="fb adm" id="ac" hidden>帳號</button><button class="fb adm" id="ad" hidden>新增</button><button class="fb adm" id="bk" hidden>備份區</button><button class="fb adm" id="lg" hidden>紀錄</button><button class="fb adm" id="pw" hidden>改密碼</button><button class="fb adm" id="adm">登出</button></span></div>
   <nav id="tabs" role="tablist" aria-label="報告書"></nav>
 </div></header>
 <main class="in">
@@ -186,8 +187,10 @@ textarea{width:100%;font:inherit;font-size:max(16px,1rem);padding:.55rem .8rem;b
   <p id="empty" hidden>沒有符合的項目，請調整搜尋或篩選條件。</p>
   </div>
 </main>
-<div id="gate" style="position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1rem"><form id="g-f" class="dlg" style="max-width:24rem;width:100%"><h2>五金表查詢</h2><p class="bk-msg">請先登入才能查看（帳號由管理員建立）</p><div class="field"><label for="g-em">帳號（電子郵件）</label><input id="g-em" type="email" autocomplete="username"></div><div class="field"><label for="g-pw">密碼（有大小寫之分）</label><input id="g-pw" type="password" autocomplete="current-password"></div><p class="hint warn" id="g-err" hidden></p><div class="btns"><button class="btn go" type="submit">登入</button></div></form></div>
+<div id="gate" style="position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1rem"><form id="g-f" class="dlg" style="max-width:24rem;width:100%"><h2>登入會員帳號即可查看</h2><div class="field"><label for="g-em">帳號</label><input id="g-em" type="text" autocomplete="username" autocapitalize="none" spellcheck="false"></div><div class="field"><label for="g-pw">密碼</label><input id="g-pw" type="password" autocomplete="current-password"></div><p class="hint warn" id="g-err" hidden></p><div class="btns"><button class="btn go" type="submit">登入</button></div></form></div>
+<div id="pg" hidden style="position:fixed;inset:0;z-index:15;background:var(--bg);overflow:auto;padding:1rem"><div id="pg-b" style="max-width:46rem;margin:0 auto;display:grid;gap:.7rem"></div></div>
 <div class="modal" id="modal" hidden><form class="dlg" id="m-form"></form></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -372,19 +375,11 @@ const newId=()=>'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,5
 function openBackup(){
   const sh=ORD.filter(id=>DATA.some(s=>s.id===id));
   $('m-form').onclick=null;$('m-form').onchange=null;
-  $('m-form').innerHTML=`<h2>備份區</h2><h3>新增五金</h3>
-  <div class="g2"><div class="field"><label for="b-s">頁面</label><select id="b-s">${sh.map(x=>`<option${x===tab?' selected':''}>${x}</option>`).join('')}</select></div><div class="field"><label for="b-t">型式（如 S03）</label><input id="b-t" value="S03" maxlength="10"></div></div>
-  <div class="g2"><div class="field"><label for="b-c">分類</label><select id="b-c">${allCats().map(c=>`<option>${esc(c)}</option>`).join('')}</select></div><div class="field"><label for="b-cn">或自訂新分類</label><input id="b-cn" maxlength="20"></div></div>
-  <div class="g2"><div class="field"><label for="b-n">名稱</label><input id="b-n" maxlength="60"></div><div class="field"><label for="b-b">廠牌（手動輸入）</label><input id="b-b" maxlength="40" autocomplete="off"></div></div>
-  <div class="field"><label for="b-m">型號（每行一個）</label><textarea id="b-m"></textarea></div>
-  <div class="field"><label for="b-z">尺寸限制（每行一則，例：1260*2555以下）</label><textarea id="b-z"></textarea></div>
-  <div class="field"><label for="b-r">備註（每行一則）</label><textarea id="b-r"></textarea></div>
-  <div class="btns"><button type="button" class="btn go" id="b-add">新增五金</button></div>
-  <h3>JSON 備份／匯入（可新增五金、證書資訊）</h3>
+  $('m-form').innerHTML=`<h2>備份區</h2><h3>JSON 備份／匯入</h3>
   <p class="bk-msg">可匯出全部資料（證書、新增的五金、分類修改、備註），或貼上 JSON 匯入。匯入會覆蓋相同編號的資料。</p>
   <textarea id="j-t" style="min-height:10rem" spellcheck="false" placeholder="按「產生備份」，或貼上要匯入的 JSON"></textarea>
   <div class="btns" style="flex-wrap:wrap"><button type="button" class="btn" id="j-exp">產生備份</button><button type="button" class="btn" id="j-copy">複製</button><button type="button" class="btn" id="j-dl">下載 .json</button><button type="button" class="btn go" id="j-imp">匯入</button></div>
-  <h3>Excel／CSV 匯入匯出（批次編輯）</h3><p class="bk-msg">先「匯出 CSV」，用 Excel 修改後再匯入。有編號(id)的列會更新該筆；id 留空則新增；多個型號／尺寸／備註在同一格內換行。</p><div class="btns" style="flex-wrap:wrap"><button type="button" class="btn" id="c-exp">匯出 CSV</button><label class="btn go" style="cursor:pointer">匯入 CSV<input type="file" id="c-f" accept=".csv,text/csv" hidden></label></div><p class="bk-msg" id="b-msg" aria-live="polite"></p>
+  <p class="bk-msg" id="b-msg" aria-live="polite"></p>
   <div class="btns"><button type="button" class="btn" id="m-x">關閉</button></div>`;
   const msg=t=>{$('b-msg').textContent=t},v=i=>$(i).value;
   const gen=()=>{const t=JSON.stringify(exportObj(),null,2);$('j-t').value=t;return t};
@@ -411,7 +406,6 @@ function openBackup(){
       for(const [k,t] of Object.entries(o.notes||{})){if(typeof t==='string'&&['F22','F28'].includes(k))await put('notes/'+k,{text:t.trim().slice(0,80)});else bad++}
       for(const [k,t] of Object.entries(o.overrides||{})){if(idOk(k)&&typeof t==='string'&&t.trim())await put('overrides/'+k,{cat:t.trim().slice(0,20)});else bad++}
       b.disabled=false;msg(`匯入完成：成功 ${ok} 筆，略過／失敗 ${bad} 筆。`)}};
-  $('c-f').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f){msg('匯入中…');msg(await csvIn(await f.text()))}};
   $('modal').hidden=false}
 $('bk').onclick=()=>{if(admin)openBackup()};
 $('list').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;const id=b.dataset.del,it=findItem(id);if(!it)return;
@@ -421,10 +415,10 @@ $('list').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if
   $('m-x').onclick=closeModal;$('modal').hidden=false});
 let auth=null,isSuper=false,justLogin=false,startL=()=>{},L0=0;
 const FB_OK=typeof firebase!=='undefined'&&!!FIREBASE_CONFIG.apiKey&&!/^YOUR/.test(FIREBASE_CONFIG.apiKey);
-function setAdmin(on){admin=on;$('bk').hidden=!on;$('lg').hidden=!on;$('adm').textContent='登出';say('');render()}
+function setAdmin(on){admin=on;$('bk').hidden=!on;$('lg').hidden=!on;$('ad').hidden=!on;$('ac').hidden=!(on&&isSuper);$('adm').textContent='登出';say('');render()}
 $('adm').onclick=async()=>{if(auth){await lg({k:'login',act:'登出'});try{await auth.signOut()}catch(e){}}location.reload()};
 $('g-f').onsubmit=async e=>{e.preventDefault();const er=$('g-err');er.hidden=true;if(!auth){er.textContent='尚未連線，無法登入。';er.hidden=false;return}
-  justLogin=true;try{await auth.signInWithEmailAndPassword($('g-em').value.trim().toLowerCase(),$('g-pw').value)}catch(x){justLogin=false;er.textContent='登入失敗，請確認帳號與密碼。';er.hidden=false;$('g-pw').value=''}};
+  justLogin=true;try{await auth.signInWithEmailAndPassword(toEm($('g-em').value),$('g-pw').value)}catch(x){justLogin=false;er.textContent='登入失敗，請確認帳號與密碼。';er.hidden=false;$('g-pw').value=''}};
 /* ===== 內建資料（存放在 Firestore，登入後才載入）===== */
 let BL=0;
 async function loadBase(){if(BL)return true;let q;try{q=await db.collection('base').get()}catch(e){say('讀取資料失敗，請確認 Firestore 規則已更新。');return false}
@@ -455,16 +449,18 @@ function openEdit(id){const it=findItem(id);if(!it)return;const ta=(i,l,a)=>`<di
   $('modal').hidden=false;$('i-n').focus()}
 $('list').addEventListener('click',e=>{const b=e.target.closest('[data-ei]');if(b)openEdit(b.dataset.ei)});
 const csvE=v=>{v=String(v??'');return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-function csvOut(){const H=['id','sheet','t','c','n','b','m','s','r'],R=[H.join(',')];
-  DATA.forEach(S=>S.items.forEach(i=>R.push([i.id,S.id,i.t,i.c,i.n,i.b,i.m.join('\n'),i.s.join('\n'),i.r.join('\n')].map(csvE).join(','))));
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+R.join('\r\n')],{type:'text/csv'}));a.download='立宸五金_'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+const HD=['編號','頁面','型式','分類','名稱','廠牌','型號','尺寸限制','備註'],HM={'編號':'id','頁面':'sheet','型式':'t','分類':'c','名稱':'n','廠牌':'b','型號':'m','尺寸限制':'s','備註':'r'};
+function dlTable(R,name){if(window.XLSX){const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(R),'五金');XLSX.writeFile(w,name+'.xlsx');return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+R.map(r=>r.map(csvE).join(',')).join('\r\n')],{type:'text/csv'}));a.download=name+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function csvOut(){const R=[HD];DATA.forEach(S=>S.items.forEach(i=>R.push([i.id,S.id,i.t,i.c,i.n,i.b,i.m.join('\n'),i.s.join('\n'),i.r.join('\n')])));dlTable(R,'立宸五金_'+new Date().toISOString().slice(0,10))}
 function csvParse(t){const R=[];let r=[],c='',q=false;t=t.replace(/^\ufeff/,'');
   for(let k=0;k<t.length;k++){const x=t[k];
     if(q){if(x=='"'){if(t[k+1]=='"'){c+='"';k++}else q=false}else c+=x}
     else if(x=='"')q=true;else if(x==','){r.push(c);c=''}else if(x=='\n'||x=='\r'){if(x=='\r'&&t[k+1]=='\n')k++;r.push(c);c='';if(r.some(z=>z!==''))R.push(r);r=[]}else c+=x}
   r.push(c);if(r.some(z=>z!==''))R.push(r);return R}
-async function csvIn(t){const R=csvParse(t),H=R.shift()||[];const ix=k=>H.indexOf(k);if(ix('n')<0||ix('id')<0)return'CSV 格式錯誤：需有 id、n 等欄位標題。';
-  let ok=0,same=0,bad=0;const g=(r,k)=>ix(k)<0?'':(r[ix(k)]||'');
+const csvIn=t=>rowsIn(csvParse(t));
+async function rowsIn(R){const H=(R.shift()||[]).map(x=>HM[String(x).trim()]||String(x).trim());const ix=k=>H.indexOf(k);if(ix('n')<0||ix('id')<0)return'CSV 格式錯誤：第一列需有「編號」「名稱」等欄位標題。';
+  let ok=0,same=0,bad=0;const g=(r,k)=>ix(k)<0?'':String(r[ix(k)]??'');
   for(const r of R){try{const id=g(r,'id').trim(),d={sheet:g(r,'sheet').trim(),t:g(r,'t'),c:g(r,'c'),n:g(r,'n'),b:g(r,'b'),m:lines(g(r,'m')),s:lines(g(r,'s')),r:lines(g(r,'r'))},it=id?findItem(id):null;
     if(it&&!it.x){const e={n:d.n.trim().slice(0,60),b:d.b.trim().slice(0,40),m:d.m,s:d.s,r:d.r};if(!e.n){bad++;continue}
       const ch=JSON.stringify(e)!==JSON.stringify({n:it.n,b:it.b,m:it.m,s:it.s,r:it.r}),cc=d.c.trim()&&d.c.trim()!==it.c;
@@ -476,7 +472,7 @@ async function csvIn(t){const R=csvParse(t),H=R.shift()||[];const ix=k=>H.indexO
   return`CSV 匯入完成：更新／新增 ${ok} 筆，未變動 ${same} 筆，略過／失敗 ${bad} 筆。`}
 let LK='edit';
 async function openLog(k){LK=k||LK;$('m-form').onsubmit=e=>e.preventDefault();$('m-form').onchange=null;
-  const tb=[['edit','管理紀錄'],['login','登入紀錄'],...(isSuper?[['acc','帳號管理']]:[])];
+  const tb=[['edit','管理紀錄'],['login','登入紀錄']];
   $('m-form').innerHTML=`<h2>紀錄</h2><div class="btns" style="flex-wrap:wrap">${tb.map(([a,l])=>`<button type="button" class="btn${a===LK?' go':''}" data-tb="${a}">${l}</button>`).join('')}<button type="button" class="btn" id="m-x">關閉</button></div><div id="lg-b" class="bk-msg">讀取中…</div>`;
   $('m-x').onclick=closeModal;$('modal').hidden=false;const B=$('lg-b');
   $('m-form').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
@@ -495,16 +491,81 @@ async function openLog(k){LK=k||LK;$('m-form').onsubmit=e=>e.preventDefault();$(
       return`<div style="padding:.5rem 0;border-bottom:1px solid var(--ln)"><b>${esc(x.act||'')}</b> ${esc(n)}<br>${esc(t)}　${esc(x.u||'')}${x.p?`<br>${esc(x.p)}${x.k==='edit'?` <button type="button" class="lnk" data-rv="${d.id}">還原</button>`:''}`:''}</div>`}).join(''):'目前沒有紀錄。'}
   catch(z){B.textContent='讀取失敗，請確認 Firestore 規則已更新。'}}
 $('lg').onclick=()=>{if(admin)openLog('edit')};
+/* ===== 帳號／頁面／改密碼 ===== */
+const DOM='@lichen.local',DEFPW='123456';
+const toEm=a=>{a=String(a).trim().toLowerCase();return a.includes('@')?a:a+DOM};
+const accName=e=>e.endsWith(DOM)?e.slice(0,-DOM.length):e;
+function openPage(title,html){$('pg-b').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem"><h2 style="margin:0">${title}</h2><button type="button" class="btn" id="pg-x">返回</button></div>`+html;$('pg').hidden=false;$('pg').scrollTop=0;$('pg-x').onclick=()=>{$('pg').hidden=true}}
+function openPw(first){$('m-form').onclick=null;$('m-form').onchange=null;
+  $('m-form').innerHTML=`<h2>修改密碼</h2>${first?'<p class="hint warn">第一次登入請修改密碼</p>':''}<div class="field"><label for="w1">新密碼（至少 6 碼）</label><input id="w1" type="password" autocomplete="new-password"></div><div class="field"><label for="w2">再輸入一次</label><input id="w2" type="password" autocomplete="new-password"></div><p class="hint warn" id="w-e" hidden></p><div class="btns"><button class="btn go" type="submit">儲存</button>${first?'':'<button class="btn" type="button" id="m-x">取消</button>'}</div>`;
+  if(!first)$('m-x').onclick=closeModal;
+  $('m-form').onsubmit=async e=>{e.preventDefault();const a=$('w1').value,er=m=>{$('w-e').textContent=m;$('w-e').hidden=false};
+    if(a.length<6)return er('密碼至少 6 碼。');if(a!==$('w2').value)return er('兩次輸入不一致。');if(a===DEFPW)return er('不可使用預設密碼。');
+    try{await auth.currentUser.updatePassword(a);try{await db.doc('staff/'+me().toLowerCase()).update({pc:true})}catch(x){}
+      lg({k:'login',act:'修改密碼'});closeModal();say('密碼已更新')}
+    catch(x){er(x.code==='auth/requires-recent-login'?'請先登出再重新登入，然後再修改密碼。':'修改失敗：'+(x.code||x.message))}};
+  $('modal').hidden=false;$('w1').focus()}
+$('pw').onclick=()=>openPw(false);
+const fld=(i,l,x='')=>`<div class="field"><label for="${i}">${l}</label><input id="${i}" ${x}></div>`;
+async function openAccounts(){openPage('帳號管理','<div class="bk-msg">讀取中…</div>');
+  const B=$('pg-b'),draw=async()=>{let q;try{q=await db.collection('staff').get()}catch(e){B.innerHTML+='<p class="hint warn">讀取失敗，請確認 Firestore 規則。</p>';return}
+    const L=q.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.ts||0)-(b.ts||0));
+    $('pg-b').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">帳號管理</h2><button type="button" class="btn" id="pg-x">返回</button></div>
+    <h3>建立帳號</h3><div class="field"><label for="a-r">1. 帳號類型</label><select id="a-r"><option value="member">會員帳號（僅可查看）</option><option value="admin">管理員帳號（可編輯）</option></select></div>${fld('a-e','2. 帳號','autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="英文、數字，2～30 字"')}<button type="button" class="btn go" id="a-add">3. 建立帳號（預設密碼 ${DEFPW}）</button><p id="a-m" class="hint warn" aria-live="polite"></p>
+    <h3>帳號資訊（共 ${L.length} 個）</h3>${fld('a-q','搜尋帳號','placeholder="輸入帳號關鍵字"')}<div id="a-l"></div>`;
+    $('pg-x').onclick=()=>{$('pg').hidden=true};
+    const paint=()=>{const k=$('a-q').value.trim().toLowerCase(),F=L.filter(x=>accName(x.id).includes(k));
+      $('a-l').innerHTML=F.length?F.map(x=>`<div style="padding:.55rem 0;border-bottom:1px solid var(--ln)"><b>${esc(accName(x.id))}</b>　${x.role==='member'?'會員帳號':'管理員帳號'}　<span class="meta">${x.pc===false?'尚未修改密碼':'已修改密碼'}</span><br><span class="meta">建立：${esc(accName(x.by||''))}　${x.ts?new Date(x.ts).toLocaleString('zh-TW',{hour12:false}):''}</span> <button type="button" class="lnk" data-ds="${esc(x.id)}">移除</button></div>`).join(''):'<p class="bk-msg">沒有符合的帳號。</p>'};
+    paint();$('a-q').oninput=paint;
+    $('pg-b').onclick=async e=>{const b=e.target.closest('button');if(!b)return;const am=$('a-m');
+      if(b.dataset.ds){if(!confirm('移除「'+accName(b.dataset.ds)+'」的登入權限？'))return;try{await D('staff/'+b.dataset.ds,'移除帳號');draw()}catch(z){am.textContent='移除失敗。'}}
+      else if(b.id==='a-add'){const ac=$('a-e').value.trim().toLowerCase(),em=ac+DOM;
+        if(!/^[a-z0-9_.-]{2,30}$/.test(ac)){am.textContent='帳號請輸入 2～30 個英文、數字或 _ . -';return}
+        b.disabled=true;am.textContent='建立中…';let used=false;
+        try{const sec=firebase.apps.find(a=>a.name==='sec')||firebase.initializeApp(FIREBASE_CONFIG,'sec');
+          try{await sec.auth().createUserWithEmailAndPassword(em,DEFPW);await sec.auth().signOut()}catch(z){if(z.code!=='auth/email-already-in-use')throw z;used=true}
+          await W('staff/'+em,{by:me(),ts:Date.now(),role:$('a-r').value,pc:used},'建立帳號');
+          await draw();$('a-m').textContent=used?'此帳號先前建立過，已重新開通，密碼維持原本設定。':'已建立，預設密碼 '+DEFPW+'，首次登入會提示修改密碼。'}
+        catch(z){b.disabled=false;am.textContent='建立失敗：'+(z.code||z.message)}}}};
+  draw()}
+$('ac').onclick=()=>{if(admin&&isSuper)openAccounts()};
+/* ===== 新增五金頁（手動、Excel、JSON）===== */
+function openAdd(){const sh=ORD.filter(id=>DATA.some(s=>s.id===id)),ta=(i,l)=>`<div class="field"><label for="${i}">${l}</label><textarea id="${i}"></textarea></div>`;
+  openPage('新增五金',`<h3>手動新增</h3><div class="g2"><div class="field"><label for="p-s">頁面</label><select id="p-s">${sh.map(x=>`<option${x===tab?' selected':''}>${x}</option>`).join('')}</select></div>${fld('p-t','型式（如 S03）','value="S03" maxlength="10"')}</div>
+  <div class="g2"><div class="field"><label for="p-c">分類</label><select id="p-c">${allCats().map(c=>`<option>${esc(c)}</option>`).join('')}</select></div>${fld('p-cn','或自訂新分類','maxlength="20"')}</div>
+  <div class="g2">${fld('p-n','名稱','maxlength="60"')}${fld('p-b','廠牌','maxlength="40" autocomplete="off"')}</div>${ta('p-m','型號（每行一個）')}${ta('p-z','尺寸限制（每行一則）')}${ta('p-r','備註（每行一則）')}
+  <div class="btns"><button type="button" class="btn go" id="p-add">新增五金</button></div>
+  <h3>Excel 匯入</h3><p class="bk-msg">第一列為標題：編號、頁面、型式、分類、名稱、廠牌、型號、尺寸限制、備註。編號留空＝新增；填寫現有編號＝更新該筆。同一格內多個型號／尺寸／備註請換行。</p>
+  <div class="btns" style="flex-wrap:wrap"><button type="button" class="btn" id="p-tp">下載範本</button><button type="button" class="btn" id="p-ex">匯出現有資料</button><label class="btn go" style="cursor:pointer">選擇 Excel／CSV 匯入<input type="file" id="p-xf" accept=".xlsx,.xls,.csv" hidden></label></div>
+  <h3>JSON 匯入</h3><p class="bk-msg">貼上 JSON（陣列，或含 items 的備份檔），或選擇 .json 檔。</p><textarea id="p-j" style="min-height:8rem" spellcheck="false"></textarea>
+  <div class="btns"><button type="button" class="btn go" id="p-ji">匯入 JSON</button><label class="btn" style="cursor:pointer">選擇 JSON 檔<input type="file" id="p-jf" accept=".json,application/json" hidden></label></div><p class="bk-msg" id="p-msg" aria-live="polite"></p>`);
+  const msg=t=>{$('p-msg').textContent=t},v=i=>$(i).value;
+  const jin=async()=>{let o;try{o=JSON.parse(v('p-j'))}catch(x){return msg('JSON 格式錯誤。')}
+    const A=Array.isArray(o)?o:Array.isArray(o&&o.items)?o.items:null;if(!A)return msg('找不到五金陣列。');
+    let ok=0,bad=0;msg('匯入中…');for(const it of A){const c=cleanItem(it);if(!c){bad++;continue}try{await W('items/'+(it&&idOk(it.id)?it.id:newId()),c,'JSON匯入');ok++}catch(x){bad++}}
+    msg(`匯入完成：成功 ${ok} 筆，略過／失敗 ${bad} 筆。`)};
+  $('pg-b').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.id==='p-add'){const d=cleanItem({sheet:v('p-s'),t:v('p-t'),c:v('p-cn').trim()||v('p-c'),n:v('p-n'),b:v('p-b'),m:lines(v('p-m')),s:lines(v('p-z')),r:lines(v('p-r'))});
+      if(!d)return msg('請至少填入名稱。');
+      try{await W('items/'+newId(),d,'新增五金');msg('已新增到 '+d.sheet+' 頁。');['p-n','p-b','p-m','p-z','p-r','p-cn'].forEach(i=>$(i).value='')}catch(x){msg('儲存失敗，請確認你有編輯權限。')}}
+    else if(b.id==='p-tp')dlTable([HD,['','F14','S03','門鎖','範例名稱','廠牌','型號1\n型號2','1260*2555以下','備註1\n備註2']],'五金匯入範本');
+    else if(b.id==='p-ex')csvOut();else if(b.id==='p-ji')jin()};
+  $('p-xf').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;msg('匯入中…');
+    try{let rows;if(/\.csv$/i.test(f.name))rows=csvParse(await f.text());else{if(!window.XLSX)return msg('Excel 元件未載入（需連網），請改用 .csv。');const w=XLSX.read(await f.arrayBuffer(),{type:'array'});rows=XLSX.utils.sheet_to_json(w.Sheets[w.SheetNames[0]],{header:1,defval:''})}
+      msg(await rowsIn(rows))}catch(x){msg('讀取失敗：'+(x.message||x))}};
+  $('p-jf').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f){$('p-j').value=await f.text();jin()}}}
+$('ad').onclick=()=>{if(admin)openAdd()};
+
 (async()=>{
   if(!FB_OK){$('gate').style.display='none';say('尚未設定 Firebase：目前為唯讀，只顯示內建資料。');return}
   try{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();auth=firebase.auth();
-    auth.onAuthStateChanged(async u=>{if(!u){isSuper=false;$('gate').style.display='flex';setAdmin(false);return}
-      const em=(u.email||'').toLowerCase(),sup=em===ADMIN_EMAIL.toLowerCase();let role=sup?'admin':null;
-      if(!role){try{const d=await db.doc('staff/'+em).get();if(d.exists)role=d.data().role||'admin'}catch(e){}}
+    auth.onAuthStateChanged(async u=>{if(!u){isSuper=false;$('pw').hidden=true;$('gate').style.display='flex';setAdmin(false);return}
+      const em=(u.email||'').toLowerCase(),sup=em===ADMIN_EMAIL.toLowerCase();let role=sup?'admin':null,first=false;
+      if(!role){try{const d=await db.doc('staff/'+em).get();if(d.exists){role=d.data().role||'admin';first=d.data().pc===false}}catch(e){}}
       if(!role){justLogin=false;await auth.signOut();setTimeout(()=>{const er=$('g-err');er.textContent='此帳號尚未開通，請聯絡管理員。';er.hidden=false},300);return}
-      isSuper=sup;$('gate').style.display='none';setAdmin(role==='admin');
+      isSuper=sup;$('gate').style.display='none';$('pw').hidden=false;setAdmin(role==='admin');
       if(justLogin){justLogin=false;lg({k:'login',act:'登入',r:role})}
-      if(await loadBase())startL()})}catch(e){db=null;return}
+      if(await loadBase())startL();if(first)openPw(true)})}catch(e){db=null;return}
   startL=()=>{if(L0)return;L0=1;
   db.collection('itemEdits').onSnapshot(snap=>{Object.keys(ie).forEach(k=>delete ie[k]);snap.docs.forEach(d=>{const c=cleanItem({sheet:DATA[0].id,...d.data()});if(c)ie[d.id]={n:c.n,b:c.b,m:c.m,s:c.s,r:c.r}});applyOv()},()=>{});
   db.collection('overrides').onSnapshot(snap=>{ov={};snap.docs.forEach(d=>{const c=d.data()?.cat;if(typeof c==='string'&&c)ov[d.id]=c});applyOv()},()=>{});
